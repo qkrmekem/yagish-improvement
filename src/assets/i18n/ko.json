@@ -1,0 +1,114 @@
+{
+  "COMMON": {
+    "NEXT": "다음",
+    "PREV": "이전",
+    "SAVE": "저장하기",
+    "PREVIEW": "미리보기",
+    "ADD": "추가",
+    "DELETE": "삭제",
+    "NOT_ENTERED": "미입력"
+  },
+  "RESUME": {
+    "TITLE": "이력서 작성",
+    "LANGUAGE_FORMAT": "언어 / 날짜 형식",
+    "DATE_FORMAT_EXAMPLE": "예",
+    "WRITE_DATE": "작성일"
+  },
+  "TABS": {
+    "INPUT": "이력서 입력",
+    "PREVIEW": "미리보기"
+  },
+  "STEPS": {
+    "BASIC_INFO": "프로필",
+    "ADDRESS": "주소",
+    "CONTACT": "연락처",
+    "PHOTO": "증명사진",
+    "EDUCATION": "학력",
+    "CAREER": "이력",
+    "CERTIFICATIONS": "면허・자격증",
+    "MOTIVATION": "지원동기",
+    "PREFERENCES": "본인희망",
+    "WRITE_DATE": "작성일",
+    "CONFIRM": "확인",
+    "DOWNLOAD": "다운로드"
+  },
+  "BASIC_INFO": {
+    "TITLE": "기본 정보 입력",
+    "NAME": "이름",
+    "NAME_PLACEHOLDER": "홍길동",
+    "EMAIL": "이메일",
+    "EMAIL_PLACEHOLDER": "example@email.com",
+    "PHONE": "연락처",
+    "PHONE_PLACEHOLDER": "010-1234-5678",
+    "BIRTH_DATE": "생년월일",
+    "ADDRESS": "주소",
+    "ADDRESS_PLACEHOLDER": "서울특별시 강남구",
+    "RESUME_DATE": "이력서 작성일"
+  },
+  "EDUCATION": {
+    "TITLE": "학력 사항",
+    "SCHOOL_NAME": "학교명",
+    "SCHOOL_PLACEHOLDER": "OO대학교",
+    "MAJOR": "전공/학과",
+    "MAJOR_PLACEHOLDER": "컴퓨터공학과",
+    "START_DATE": "입학일",
+    "END_DATE": "졸업일",
+    "STATUS": "상태",
+    "STATUS_GRADUATED": "졸업",
+    "STATUS_ENROLLED": "재학",
+    "STATUS_LEAVE": "휴학",
+    "STATUS_DROPOUT": "중퇴",
+    "STATUS_EXPECTED": "졸업예정",
+    "ADD_EDUCATION": "학력 추가"
+  },
+  "CAREER": {
+    "TITLE": "경력 사항",
+    "COMPANY_NAME": "회사명",
+    "COMPANY_PLACEHOLDER": "OO회사",
+    "POSITION": "직책/직위",
+    "POSITION_PLACEHOLDER": "개발자",
+    "START_DATE": "입사일",
+    "END_DATE": "퇴사일",
+    "DESCRIPTION": "담당 업무",
+    "DESCRIPTION_PLACEHOLDER": "담당했던 업무를 입력하세요",
+    "ADD_CAREER": "경력 추가"
+  },
+  "CERTIFICATIONS": {
+    "TITLE": "자격증",
+    "CERT_NAME": "자격증명",
+    "CERT_PLACEHOLDER": "정보처리기사",
+    "ISSUER": "발급기관",
+    "ISSUER_PLACEHOLDER": "한국산업인력공단",
+    "ACQUIRED_DATE": "취득일",
+    "ADD_CERT": "자격증 추가"
+  },
+  "LANGUAGE_SKILLS": {
+    "TITLE": "어학 능력",
+    "LANGUAGE": "언어",
+    "EXAM_NAME": "시험명",
+    "GRADE": "등급",
+    "SCORE": "점수",
+    "ACQUIRED_DATE": "취득일",
+    "ADD_LANGUAGE": "어학 추가"
+  },
+  "SELF_INTRO": {
+    "TITLE": "자기소개서",
+    "MOTIVATION": "지원 동기",
+    "MOTIVATION_PLACEHOLDER": "지원 동기를 작성해주세요",
+    "STRENGTHS": "성격의 장단점",
+    "STRENGTHS_PLACEHOLDER": "본인의 장점과 단점을 작성해주세요",
+    "HOBBIES": "취미 / 특기",
+    "HOBBIES_PLACEHOLDER": "취미나 특기를 작성해주세요",
+    "CHAR_LIMIT": "500자 이내"
+  },
+  "IMPROVEMENT": {
+    "BADGE": "개선",
+    "DROPDOWN": "페이지 이동 없이 드롭다운으로 이력서 종류 선택",
+    "PREVIEW": "미리보기 이미지 확대로 상세 확인 가능",
+    "STEPPER": "데스크탑: 세로 스텝퍼 / 모바일: 가로 스텝퍼로 반응형 구현",
+    "TABS": "입력폼과 미리보기를 탭으로 분리",
+    "SEPARATE_FORMS": "자격증과 어학을 별도 폼으로 분리하여 관리가 용이합니다",
+    "DATE_FORMAT": "언어별 날짜 포맷",
+    "DYNAMIC_COMPONENT": "스텝퍼 네비게이션과 콘텐츠를 분리하여 동적 컴포넌트로 로딩"
+  }
+}

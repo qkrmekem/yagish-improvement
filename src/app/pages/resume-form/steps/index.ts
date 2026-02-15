@@ -3,3 +3,4 @@ export { EducationStepComponent } from './education-step.component';
 export { CareerStepComponent } from './career-step.component';
 export { CertificationsStepComponent } from './certifications-step.component';
 export { SelfIntroStepComponent } from './self-intro-step.component';
+export { PlaceholderStepComponent } from './placeholder-step.component';

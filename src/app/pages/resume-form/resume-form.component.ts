@@ -14,12 +14,14 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { BasicInfoStepComponent } from './steps/basic-info-step.component';
 import { EducationStepComponent } from './steps/education-step.component';
 import { CareerStepComponent } from './steps/career-step.component';
 import { CertificationsStepComponent } from './steps/certifications-step.component';
 import { SelfIntroStepComponent } from './steps/self-intro-step.component';
+import { PlaceholderStepComponent } from './steps/placeholder-step.component';
 
 @Component({
   selector: 'app-resume-form',
@@ -38,7 +40,8 @@ import { SelfIntroStepComponent } from './steps/self-intro-step.component';
     MatIconModule,
     MatDialogModule,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    TranslateModule
   ],
   templateUrl: './resume-form.component.html',
   styleUrl: './resume-form.component.scss'
@@ -52,13 +55,20 @@ export class ResumeFormComponent implements AfterViewInit {
   currentLanguage = signal<'ko' | 'ja' | 'en'>('ko');
   currentStep = signal(0);
 
-  // 스텝 정의
-  steps: Array<{ label: string; icon: string; component: any }> = [
-    { label: '기본 정보', icon: 'person', component: BasicInfoStepComponent },
-    { label: '학력', icon: 'school', component: EducationStepComponent },
-    { label: '경력', icon: 'work', component: CareerStepComponent },
-    { label: '자격/어학', icon: 'verified', component: CertificationsStepComponent },
-    { label: '자기소개', icon: 'description', component: SelfIntroStepComponent }
+  // 스텝 정의 (labelKey는 번역 키) - 야기시 실제 스텝 구조 반영
+  steps: Array<{ labelKey: string; icon: string; component: any; isPlaceholder?: boolean }> = [
+    { labelKey: 'BASIC_INFO', icon: 'person', component: BasicInfoStepComponent },
+    { labelKey: 'ADDRESS', icon: 'location_on', component: PlaceholderStepComponent, isPlaceholder: true },
+    { labelKey: 'CONTACT', icon: 'phone', component: PlaceholderStepComponent, isPlaceholder: true },
+    { labelKey: 'PHOTO', icon: 'photo_camera', component: PlaceholderStepComponent, isPlaceholder: true },
+    { labelKey: 'EDUCATION', icon: 'school', component: EducationStepComponent },
+    { labelKey: 'CAREER', icon: 'work', component: CareerStepComponent },
+    { labelKey: 'CERTIFICATIONS', icon: 'verified', component: CertificationsStepComponent },
+    { labelKey: 'MOTIVATION', icon: 'lightbulb', component: SelfIntroStepComponent },
+    { labelKey: 'PREFERENCES', icon: 'tune', component: PlaceholderStepComponent, isPlaceholder: true },
+    { labelKey: 'WRITE_DATE', icon: 'calendar_today', component: PlaceholderStepComponent, isPlaceholder: true },
+    { labelKey: 'CONFIRM', icon: 'check_circle', component: PlaceholderStepComponent, isPlaceholder: true },
+    { labelKey: 'DOWNLOAD', icon: 'download', component: PlaceholderStepComponent, isPlaceholder: true },
   ];
 
   // 언어별 날짜 포맷
@@ -92,10 +102,11 @@ export class ResumeFormComponent implements AfterViewInit {
     private fb: FormBuilder,
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
-    private dateAdapter: DateAdapter<Date>
+    private dateAdapter: DateAdapter<Date>,
+    private translateService: TranslateService
   ) {
-    // 반응형: 모바일에서는 가로 스텝퍼
-    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+    // 반응형: 768px 이하에서는 가로 스텝퍼
+    this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
       this.isVerticalStepper.set(!result.matches);
     });
 
@@ -160,6 +171,18 @@ export class ResumeFormComponent implements AfterViewInit {
   // 컴포넌트 Input/Output 바인딩
   private bindComponentIO(componentRef: ComponentRef<any>, stepIndex: number): void {
     const instance = componentRef.instance;
+    const stepConfig = this.steps[stepIndex];
+
+    // 플레이스홀더 스텝 처리
+    if (stepConfig.isPlaceholder) {
+      instance.title = this.translateService.instant('STEPS.' + stepConfig.labelKey);
+      instance.icon = stepConfig.icon;
+      instance.showPrev = stepIndex > 0;
+      instance.showNext = stepIndex < this.steps.length - 1;
+      instance.next.subscribe(() => this.nextStep());
+      instance.prev.subscribe(() => this.prevStep());
+      return;
+    }
 
     switch (stepIndex) {
       case 0: // BasicInfoStep
@@ -168,7 +191,7 @@ export class ResumeFormComponent implements AfterViewInit {
         instance.next.subscribe(() => this.nextStep());
         break;
 
-      case 1: // EducationStep
+      case 4: // EducationStep
         instance.form = this.educationForm;
         instance.next.subscribe(() => this.nextStep());
         instance.prev.subscribe(() => this.prevStep());
@@ -176,7 +199,7 @@ export class ResumeFormComponent implements AfterViewInit {
         instance.removeSchool.subscribe((i: number) => this.removeSchool(i));
         break;
 
-      case 2: // CareerStep
+      case 5: // CareerStep
         instance.form = this.careerForm;
         instance.next.subscribe(() => this.nextStep());
         instance.prev.subscribe(() => this.prevStep());
@@ -184,7 +207,7 @@ export class ResumeFormComponent implements AfterViewInit {
         instance.removeCareer.subscribe((i: number) => this.removeCareer(i));
         break;
 
-      case 3: // CertificationsStep
+      case 6: // CertificationsStep
         instance.form = this.certificationsForm;
         instance.next.subscribe(() => this.nextStep());
         instance.prev.subscribe(() => this.prevStep());
@@ -194,8 +217,9 @@ export class ResumeFormComponent implements AfterViewInit {
         instance.removeLanguage.subscribe((i: number) => this.removeLanguageSkill(i));
         break;
 
-      case 4: // SelfIntroStep
+      case 7: // SelfIntroStep
         instance.form = this.selfIntroForm;
+        instance.next.subscribe(() => this.nextStep());
         instance.prev.subscribe(() => this.prevStep());
         instance.preview.subscribe(() => this.openPreview());
         instance.save.subscribe(() => this.saveResume());
@@ -240,7 +264,8 @@ export class ResumeFormComponent implements AfterViewInit {
       language: [''],
       examName: [''],
       grade: [''],
-      score: ['']
+      score: [''],
+      acquiredDate: [null]
     });
   }
 
@@ -302,9 +327,12 @@ export class ResumeFormComponent implements AfterViewInit {
     }
   }
 
-  // 언어 변경 (datepicker locale도 함께 변경)
+  // 언어 변경 (i18n, datepicker locale 모두 변경)
   changeLanguage(lang: 'ko' | 'ja' | 'en'): void {
     this.currentLanguage.set(lang);
+
+    // i18n 언어 변경
+    this.translateService.use(lang);
 
     // DateAdapter locale 변경
     const localeMap = { ko: 'ko-KR', ja: 'ja-JP', en: 'en-US' };

@@ -45,8 +45,8 @@ import { MatIconModule } from '@angular/material/icon';
         <button mat-raised-button color="accent" (click)="preview.emit()">
           <mat-icon>preview</mat-icon> 미리보기
         </button>
-        <button mat-raised-button color="primary" (click)="save.emit()">
-          <mat-icon>save</mat-icon> 저장하기
+        <button mat-raised-button color="primary" (click)="next.emit()">
+          다음 <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </form>
@@ -66,6 +66,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class SelfIntroStepComponent {
   @Input() form!: FormGroup;
+  @Output() next = new EventEmitter<void>();
   @Output() prev = new EventEmitter<void>();
   @Output() preview = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();

@@ -1,0 +1,114 @@
+{
+  "COMMON": {
+    "NEXT": "Next",
+    "PREV": "Back",
+    "SAVE": "Save",
+    "PREVIEW": "Preview",
+    "ADD": "Add",
+    "DELETE": "Delete",
+    "NOT_ENTERED": "Not entered"
+  },
+  "RESUME": {
+    "TITLE": "Create Resume",
+    "LANGUAGE_FORMAT": "Language / Date Format",
+    "DATE_FORMAT_EXAMPLE": "e.g.",
+    "WRITE_DATE": "Date"
+  },
+  "TABS": {
+    "INPUT": "Resume Input",
+    "PREVIEW": "Preview"
+  },
+  "STEPS": {
+    "BASIC_INFO": "Profile",
+    "ADDRESS": "Address",
+    "CONTACT": "Contact",
+    "PHOTO": "Photo",
+    "EDUCATION": "Education",
+    "CAREER": "Work History",
+    "CERTIFICATIONS": "Licenses",
+    "MOTIVATION": "Motivation",
+    "PREFERENCES": "Preferences",
+    "WRITE_DATE": "Date",
+    "CONFIRM": "Confirm",
+    "DOWNLOAD": "Download"
+  },
+  "BASIC_INFO": {
+    "TITLE": "Basic Information",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "John Doe",
+    "EMAIL": "Email",
+    "EMAIL_PLACEHOLDER": "example@email.com",
+    "PHONE": "Phone",
+    "PHONE_PLACEHOLDER": "123-456-7890",
+    "BIRTH_DATE": "Date of Birth",
+    "ADDRESS": "Address",
+    "ADDRESS_PLACEHOLDER": "New York, NY",
+    "RESUME_DATE": "Resume Date"
+  },
+  "EDUCATION": {
+    "TITLE": "Education",
+    "SCHOOL_NAME": "School Name",
+    "SCHOOL_PLACEHOLDER": "University of...",
+    "MAJOR": "Major/Department",
+    "MAJOR_PLACEHOLDER": "Computer Science",
+    "START_DATE": "Start Date",
+    "END_DATE": "End Date",
+    "STATUS": "Status",
+    "STATUS_GRADUATED": "Graduated",
+    "STATUS_ENROLLED": "Enrolled",
+    "STATUS_LEAVE": "On Leave",
+    "STATUS_DROPOUT": "Dropped Out",
+    "STATUS_EXPECTED": "Expected",
+    "ADD_EDUCATION": "Add Education"
+  },
+  "CAREER": {
+    "TITLE": "Work Experience",
+    "COMPANY_NAME": "Company Name",
+    "COMPANY_PLACEHOLDER": "ABC Company",
+    "POSITION": "Position",
+    "POSITION_PLACEHOLDER": "Developer",
+    "START_DATE": "Start Date",
+    "END_DATE": "End Date",
+    "DESCRIPTION": "Description",
+    "DESCRIPTION_PLACEHOLDER": "Enter your job responsibilities",
+    "ADD_CAREER": "Add Experience"
+  },
+  "CERTIFICATIONS": {
+    "TITLE": "Certifications",
+    "CERT_NAME": "Certificate Name",
+    "CERT_PLACEHOLDER": "AWS Certified",
+    "ISSUER": "Issuer",
+    "ISSUER_PLACEHOLDER": "Amazon",
+    "ACQUIRED_DATE": "Date Acquired",
+    "ADD_CERT": "Add Certification"
+  },
+  "LANGUAGE_SKILLS": {
+    "TITLE": "Language Skills",
+    "LANGUAGE": "Language",
+    "EXAM_NAME": "Exam Name",
+    "GRADE": "Grade",
+    "SCORE": "Score",
+    "ACQUIRED_DATE": "Date Acquired",
+    "ADD_LANGUAGE": "Add Language"
+  },
+  "SELF_INTRO": {
+    "TITLE": "Self Introduction",
+    "MOTIVATION": "Motivation",
+    "MOTIVATION_PLACEHOLDER": "Enter your motivation",
+    "STRENGTHS": "Strengths & Weaknesses",
+    "STRENGTHS_PLACEHOLDER": "Enter your strengths and weaknesses",
+    "HOBBIES": "Hobbies & Skills",
+    "HOBBIES_PLACEHOLDER": "Enter your hobbies or skills",
+    "CHAR_LIMIT": "Max 500 characters"
+  },
+  "IMPROVEMENT": {
+    "BADGE": "Improvement",
+    "DROPDOWN": "Select resume type via dropdown without page navigation",
+    "PREVIEW": "Enlarged preview images for detailed view",
+    "STEPPER": "Desktop: Vertical stepper / Mobile: Horizontal stepper (responsive)",
+    "TABS": "Input form and preview separated into tabs for easy switching",
+    "SEPARATE_FORMS": "Certifications and languages separated for easier management",
+    "DATE_FORMAT": "Language-specific date format",
+    "DYNAMIC_COMPONENT": "Stepper navigation and content separated with dynamic component loading"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "COMMON": {
+    "NEXT": "次へ",
+    "PREV": "戻る",
+    "SAVE": "保存",
+    "PREVIEW": "プレビュー",
+    "ADD": "追加",
+    "DELETE": "削除",
+    "NOT_ENTERED": "未入力"
+  },
+  "RESUME": {
+    "TITLE": "履歴書作成",
+    "LANGUAGE_FORMAT": "言語 / 日付形式",
+    "DATE_FORMAT_EXAMPLE": "例",
+    "WRITE_DATE": "作成日"
+  },
+  "TABS": {
+    "INPUT": "履歴書入力",
+    "PREVIEW": "プレビュー"
+  },
+  "STEPS": {
+    "BASIC_INFO": "プロフィール",
+    "ADDRESS": "住所",
+    "CONTACT": "連絡先",
+    "PHOTO": "証明写真",
+    "EDUCATION": "学歴",
+    "CAREER": "履歴",
+    "CERTIFICATIONS": "免許・資格",
+    "MOTIVATION": "志望動機",
+    "PREFERENCES": "本人希望",
+    "WRITE_DATE": "作成日",
+    "CONFIRM": "確認",
+    "DOWNLOAD": "ダウンロード"
+  },
+  "BASIC_INFO": {
+    "TITLE": "基本情報入力",
+    "NAME": "氏名",
+    "NAME_PLACEHOLDER": "山田太郎",
+    "EMAIL": "メール",
+    "EMAIL_PLACEHOLDER": "example@email.com",
+    "PHONE": "電話番号",
+    "PHONE_PLACEHOLDER": "090-1234-5678",
+    "BIRTH_DATE": "生年月日",
+    "ADDRESS": "住所",
+    "ADDRESS_PLACEHOLDER": "東京都渋谷区",
+    "RESUME_DATE": "履歴書作成日"
+  },
+  "EDUCATION": {
+    "TITLE": "学歴",
+    "SCHOOL_NAME": "学校名",
+    "SCHOOL_PLACEHOLDER": "〇〇大学",
+    "MAJOR": "専攻/学科",
+    "MAJOR_PLACEHOLDER": "情報工学科",
+    "START_DATE": "入学日",
+    "END_DATE": "卒業日",
+    "STATUS": "状態",
+    "STATUS_GRADUATED": "卒業",
+    "STATUS_ENROLLED": "在学",
+    "STATUS_LEAVE": "休学",
+    "STATUS_DROPOUT": "中退",
+    "STATUS_EXPECTED": "卒業見込",
+    "ADD_EDUCATION": "学歴追加"
+  },
+  "CAREER": {
+    "TITLE": "職歴",
+    "COMPANY_NAME": "会社名",
+    "COMPANY_PLACEHOLDER": "〇〇株式会社",
+    "POSITION": "役職",
+    "POSITION_PLACEHOLDER": "エンジニア",
+    "START_DATE": "入社日",
+    "END_DATE": "退社日",
+    "DESCRIPTION": "業務内容",
+    "DESCRIPTION_PLACEHOLDER": "担当した業務を入力してください",
+    "ADD_CAREER": "職歴追加"
+  },
+  "CERTIFICATIONS": {
+    "TITLE": "資格",
+    "CERT_NAME": "資格名",
+    "CERT_PLACEHOLDER": "基本情報技術者",
+    "ISSUER": "発行機関",
+    "ISSUER_PLACEHOLDER": "IPA",
+    "ACQUIRED_DATE": "取得日",
+    "ADD_CERT": "資格追加"
+  },
+  "LANGUAGE_SKILLS": {
+    "TITLE": "語学能力",
+    "LANGUAGE": "言語",
+    "EXAM_NAME": "試験名",
+    "GRADE": "等級",
+    "SCORE": "点数",
+    "ACQUIRED_DATE": "取得日",
+    "ADD_LANGUAGE": "語学追加"
+  },
+  "SELF_INTRO": {
+    "TITLE": "自己紹介書",
+    "MOTIVATION": "志望動機",
+    "MOTIVATION_PLACEHOLDER": "志望動機を記入してください",
+    "STRENGTHS": "長所・短所",
+    "STRENGTHS_PLACEHOLDER": "自分の長所と短所を記入してください",
+    "HOBBIES": "趣味・特技",
+    "HOBBIES_PLACEHOLDER": "趣味や特技を記入してください",
+    "CHAR_LIMIT": "500文字以内"
+  },
+  "IMPROVEMENT": {
+    "BADGE": "改善",
+    "DROPDOWN": "ページ遷移なしでドロップダウンから履歴書種類を選択",
+    "PREVIEW": "プレビュー画像の拡大で詳細確認可能",
+    "STEPPER": "PC: 縦ステッパー / モバイル: 横ステッパーでレスポンシブ対応",
+    "TABS": "入力フォームとプレビューをタブで分離し切り替えが容易",
+    "SEPARATE_FORMS": "資格と語学を別フォームで分離し管理が容易",
+    "DATE_FORMAT": "言語別日付フォーマット",
+    "DYNAMIC_COMPONENT": "ステッパーとコンテンツを分離し動的コンポーネントでロード"
+  }
+}

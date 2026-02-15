@@ -1,34 +1,34 @@
 <div class="resume-form-container">
   <!-- 언어 선택 및 날짜 포맷 설정 (개선점 6) -->
   <div class="header-controls">
-    <h1>이력서 작성</h1>
+    <h1>{{ 'RESUME.TITLE' | translate }}</h1>
     <div class="language-selector">
       <div class="improvement-badge-inline">
-        <span class="badge">개선 6</span> 언어별 날짜 포맷
+        <span class="badge">{{ 'IMPROVEMENT.BADGE' | translate }} 6</span> {{ 'IMPROVEMENT.DATE_FORMAT' | translate }}
       </div>
       <mat-form-field appearance="outline">
-        <mat-label>언어 / 날짜 형식</mat-label>
+        <mat-label>{{ 'RESUME.LANGUAGE_FORMAT' | translate }}</mat-label>
         <mat-select [value]="currentLanguage()" (selectionChange)="changeLanguage($event.value)">
           <mat-option *ngFor="let lang of languages" [value]="lang.code">{{ lang.label }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <span class="date-format-preview">예: {{ dateFormats().placeholder }}</span>
+      <span class="date-format-preview">{{ 'RESUME.DATE_FORMAT_EXAMPLE' | translate }}: {{ dateFormats().placeholder }}</span>
     </div>
   </div>
 
   <!-- 개선점 4: 입력폼 / 미리보기 탭 -->
   <div class="improvement-badge">
-    <span class="badge">개선 4</span> 입력폼과 미리보기를 탭으로 분리하여 전환이 용이합니다
+    <span class="badge">{{ 'IMPROVEMENT.BADGE' | translate }} 4</span> {{ 'IMPROVEMENT.TABS' | translate }}
   </div>
 
   <mat-tab-group animationDuration="200ms" class="form-tabs">
     <!-- 입력폼 탭 -->
-    <mat-tab label="이력서 입력">
+    <mat-tab [label]="'TABS.INPUT' | translate">
       <div class="tab-content">
 
-        <!-- 개선점 3: 커스텀 스텝퍼 (세로/가로 반응형) -->
+        <!-- 개선점 3: 세로 스텝퍼 (데스크탑) / 가로 스텝퍼 (모바일) -->
         <div class="improvement-badge">
-          <span class="badge">개선 3</span> 스텝퍼 네비게이션과 콘텐츠를 분리하여 동적 컴포넌트로 로딩
+          <span class="badge">{{ 'IMPROVEMENT.BADGE' | translate }} 3</span> {{ 'IMPROVEMENT.STEPPER' | translate }}
         </div>
 
         <div class="stepper-layout" [class.vertical]="isVerticalStepper()" [class.horizontal]="!isVerticalStepper()">
@@ -44,7 +44,7 @@
                 <mat-icon *ngIf="currentStep() > i">check</mat-icon>
                 <mat-icon *ngIf="currentStep() <= i">{{ step.icon }}</mat-icon>
               </span>
-              <span class="step-label">{{ step.label }}</span>
+              <span class="step-label">{{ 'STEPS.' + step.labelKey | translate }}</span>
               <span class="step-number">{{ i + 1 }} / {{ steps.length }}</span>
             </button>
           </nav>
@@ -58,92 +58,92 @@
     </mat-tab>
 
     <!-- 미리보기 탭 -->
-    <mat-tab label="미리보기">
+    <mat-tab [label]="'TABS.PREVIEW' | translate">
       <div class="tab-content preview-tab">
         <div class="resume-preview">
           <div class="preview-header">
-            <h2>이력서</h2>
-            <p class="date-display">작성일: {{ formatDate(basicInfoForm.get('resumeDate')?.value) }}</p>
+            <h2>{{ 'RESUME.TITLE' | translate }}</h2>
+            <p class="date-display">{{ 'RESUME.WRITE_DATE' | translate }}: {{ formatDate(basicInfoForm.get('resumeDate')?.value) }}</p>
           </div>
 
           <section class="preview-section">
-            <h3>기본 정보</h3>
+            <h3>{{ 'STEPS.BASIC_INFO' | translate }}</h3>
             <mat-divider></mat-divider>
             <div class="info-grid">
               <div class="info-item">
-                <label>이름</label>
-                <span>{{ basicInfoForm.get('name')?.value || '미입력' }}</span>
+                <label>{{ 'BASIC_INFO.NAME' | translate }}</label>
+                <span>{{ basicInfoForm.get('name')?.value || ('COMMON.NOT_ENTERED' | translate) }}</span>
               </div>
               <div class="info-item">
-                <label>이메일</label>
-                <span>{{ basicInfoForm.get('email')?.value || '미입력' }}</span>
+                <label>{{ 'BASIC_INFO.EMAIL' | translate }}</label>
+                <span>{{ basicInfoForm.get('email')?.value || ('COMMON.NOT_ENTERED' | translate) }}</span>
               </div>
               <div class="info-item">
-                <label>연락처</label>
-                <span>{{ basicInfoForm.get('phone')?.value || '미입력' }}</span>
+                <label>{{ 'BASIC_INFO.PHONE' | translate }}</label>
+                <span>{{ basicInfoForm.get('phone')?.value || ('COMMON.NOT_ENTERED' | translate) }}</span>
               </div>
               <div class="info-item">
-                <label>생년월일</label>
-                <span>{{ formatDate(basicInfoForm.get('birthDate')?.value) || '미입력' }}</span>
+                <label>{{ 'BASIC_INFO.BIRTH_DATE' | translate }}</label>
+                <span>{{ formatDate(basicInfoForm.get('birthDate')?.value) || ('COMMON.NOT_ENTERED' | translate) }}</span>
               </div>
             </div>
           </section>
 
           <section class="preview-section">
-            <h3>학력</h3>
+            <h3>{{ 'STEPS.EDUCATION' | translate }}</h3>
             <mat-divider></mat-divider>
             <div class="preview-item" *ngFor="let school of schools.controls">
-              <strong>{{ school.get('schoolName')?.value || '학교명' }}</strong>
+              <strong>{{ school.get('schoolName')?.value || ('EDUCATION.SCHOOL_NAME' | translate) }}</strong>
               <span class="detail">{{ school.get('major')?.value }} ({{ school.get('status')?.value }})</span>
             </div>
           </section>
 
           <section class="preview-section">
-            <h3>경력</h3>
+            <h3>{{ 'STEPS.CAREER' | translate }}</h3>
             <mat-divider></mat-divider>
             <div class="preview-item" *ngFor="let career of careers.controls">
-              <strong>{{ career.get('companyName')?.value || '회사명' }}</strong>
+              <strong>{{ career.get('companyName')?.value || ('CAREER.COMPANY_NAME' | translate) }}</strong>
               <span class="detail">{{ career.get('position')?.value }}</span>
               <p class="description">{{ career.get('description')?.value }}</p>
             </div>
           </section>
 
           <section class="preview-section">
-            <h3>자격증</h3>
+            <h3>{{ 'CERTIFICATIONS.TITLE' | translate }}</h3>
             <mat-divider></mat-divider>
             <div class="preview-item" *ngFor="let cert of certifications.controls">
-              <strong>{{ cert.get('certName')?.value || '자격증명' }}</strong>
+              <strong>{{ cert.get('certName')?.value || ('CERTIFICATIONS.CERT_NAME' | translate) }}</strong>
               <span class="detail">{{ cert.get('issuer')?.value }}</span>
             </div>
           </section>
 
           <section class="preview-section">
-            <h3>어학</h3>
+            <h3>{{ 'LANGUAGE_SKILLS.TITLE' | translate }}</h3>
             <mat-divider></mat-divider>
             <div class="preview-item" *ngFor="let lang of languageSkills.controls">
               <strong>{{ lang.get('language')?.value }} - {{ lang.get('examName')?.value }}</strong>
-              <span class="detail">등급: {{ lang.get('grade')?.value }} | 점수: {{ lang.get('score')?.value }}</span>
+              <span class="detail">{{ 'LANGUAGE_SKILLS.GRADE' | translate }}: {{ lang.get('grade')?.value }} | {{ 'LANGUAGE_SKILLS.SCORE' | translate }}: {{ lang.get('score')?.value }}</span>
             </div>
           </section>
 
           <section class="preview-section">
-            <h3>자기소개</h3>
+            <h3>{{ 'STEPS.SELF_INTRO' | translate }}</h3>
             <mat-divider></mat-divider>
             <div class="text-content">
-              <h4>지원 동기</h4>
-              <p>{{ selfIntroForm.get('motivation')?.value || '미입력' }}</p>
-              <h4>장점 / 강점</h4>
-              <p>{{ selfIntroForm.get('strengths')?.value || '미입력' }}</p>
+              <h4>{{ 'SELF_INTRO.MOTIVATION' | translate }}</h4>
+              <p>{{ selfIntroForm.get('motivation')?.value || ('COMMON.NOT_ENTERED' | translate) }}</p>
+              <h4>{{ 'SELF_INTRO.STRENGTHS' | translate }}</h4>
+              <p>{{ selfIntroForm.get('strengths')?.value || ('COMMON.NOT_ENTERED' | translate) }}</p>
             </div>
           </section>
         </div>
 
         <div class="preview-actions">
           <button mat-raised-button color="primary" (click)="openPreview()">
-            <mat-icon>fullscreen</mat-icon> 전체 화면으로 보기
+            <mat-icon>fullscreen</mat-icon> {{ 'COMMON.PREVIEW' | translate }}
           </button>
           <button mat-raised-button color="accent">
-            <mat-icon>picture_as_pdf</mat-icon> PDF 다운로드
+            <mat-icon>picture_as_pdf</mat-icon> PDF
           </button>
         </div>
       </div>

@@ -79,7 +79,6 @@
 .stepper-layout {
   display: flex;
   gap: 24px;
-  min-height: 500px;
 
   // 세로 레이아웃 (데스크탑)
   &.vertical {
@@ -91,6 +90,19 @@
       flex-shrink: 0;
       border-right: 1px solid #e0e0e0;
       padding-right: 24px;
+
+      // sticky로 고정 (toolbar 높이 고려)
+      position: sticky;
+      top: 80px;
+      align-self: flex-start;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+
+    // 스텝 내용은 네비게이션 높이에 맞춰 늘어나지 않도록
+    .step-content {
+      align-self: flex-start;
+      width: 100%;
     }
 
     .step-button {
@@ -114,6 +126,14 @@
       padding-bottom: 16px;
       border-bottom: 1px solid #e0e0e0;
       gap: 8px;
+
+      // sticky로 고정
+      position: sticky;
+      top: 64px;
+      background: white;
+      z-index: 10;
+      margin: -24px -24px 16px -24px;
+      padding: 16px 24px;
     }
 
     .step-button {
@@ -201,7 +221,6 @@
   background: #fafafa;
   border-radius: 8px;
   padding: 8px;
-  overflow: auto;
 }
 
 .step-form {
