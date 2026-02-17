@@ -11,8 +11,12 @@
         <mat-select [value]="currentLanguage()" (selectionChange)="changeLanguage($event.value)">
           <mat-option *ngFor="let lang of languages" [value]="lang.code">{{ lang.label }}</mat-option>
         </mat-select>
+        <mat-hint>{{ 'RESUME.DATE_FORMAT_EXAMPLE' | translate }}: {{ dateFormats().placeholder }}</mat-hint>
       </mat-form-field>
-      <span class="date-format-preview">{{ 'RESUME.DATE_FORMAT_EXAMPLE' | translate }}: {{ dateFormats().placeholder }}</span>
+      <button mat-raised-button color="primary" class="preview-btn" (click)="openPreview()">
+        <mat-icon>preview</mat-icon>
+        {{ 'COMMON.PREVIEW' | translate }}
+      </button>
     </div>
   </div>
 

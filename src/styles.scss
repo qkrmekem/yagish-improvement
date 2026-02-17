@@ -36,3 +36,25 @@ html, body {
 .mat-mdc-card {
   margin-bottom: 16px;
 }
+
+// Lightbox dialog 스타일
+.lightbox-dialog {
+  .mat-mdc-dialog-container {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    max-height: 100vh;
+
+    .mdc-dialog__surface {
+      background: transparent;
+      box-shadow: none;
+      max-height: 100vh;
+      overflow: hidden;
+    }
+
+    .mdc-dialog__content {
+      padding: 0;
+      max-height: 100vh;
+    }
+  }
+}
