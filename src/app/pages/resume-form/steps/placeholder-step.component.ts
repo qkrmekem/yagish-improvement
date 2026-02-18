@@ -52,7 +52,7 @@ import { TranslateModule } from '@ngx-translate/core';
       font-size: 64px;
       width: 64px;
       height: 64px;
-      color: #1976d2;
+      color: #00C8AA;
       opacity: 0.5;
       margin-bottom: 16px;
     }

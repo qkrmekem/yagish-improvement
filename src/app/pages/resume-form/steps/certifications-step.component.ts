@@ -154,14 +154,14 @@ import { TranslateModule } from '@ngx-translate/core';
     .step-actions { margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end; }
     h3 {
       margin: 0 0 16px;
-      color: #1976d2;
+      color: #00C8AA;
       display: flex;
       align-items: center;
       gap: 8px;
     }
     mat-divider { margin: 32px 0; }
     .improvement-badge {
-      background: #e3f2fd;
+      background: #E0F7F4;
       padding: 12px 16px;
       border-radius: 8px;
       margin-bottom: 24px;
@@ -170,7 +170,7 @@ import { TranslateModule } from '@ngx-translate/core';
       gap: 12px;
     }
     .badge {
-      background: #1976d2;
+      background: #00C8AA;
       color: white;
       padding: 4px 8px;
       border-radius: 4px;

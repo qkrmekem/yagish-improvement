@@ -2,8 +2,42 @@
 
 @include mat.core();
 
-$yagish-primary: mat.define-palette(mat.$indigo-palette);
-$yagish-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+// Yagish 민트/청록 커스텀 팔레트
+$yagish-teal: (
+  50: #E0F7F4,
+  100: #B3ECE4,
+  200: #80E0D2,
+  300: #4DD4C0,
+  400: #26CAB3,
+  500: #00C8AA,
+  600: #00B89C,
+  700: #00A896,
+  800: #009888,
+  900: #007A6E,
+  A100: #A7FFEB,
+  A200: #64FFDA,
+  A400: #1DE9B6,
+  A700: #00BFA5,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(0, 0, 0, 0.87),
+    A200: rgba(0, 0, 0, 0.87),
+    A400: rgba(0, 0, 0, 0.87),
+    A700: rgba(0, 0, 0, 0.87),
+  )
+);
+
+$yagish-primary: mat.define-palette($yagish-teal);
+$yagish-accent: mat.define-palette(mat.$orange-palette, A200, A100, A400);
 $yagish-warn: mat.define-palette(mat.$red-palette);
 
 $yagish-theme: mat.define-light-theme((

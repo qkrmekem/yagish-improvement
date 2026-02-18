@@ -96,7 +96,7 @@ import { TranslateModule } from '@ngx-translate/core';
     .remove-btn { margin-left: auto; }
     .add-btn { margin: 16px 0; }
     .step-actions { margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end; }
-    h3 { margin: 0 0 24px; color: #1976d2; }
+    h3 { margin: 0 0 24px; color: #00C8AA; }
   `]
 })
 export class CareerStepComponent {

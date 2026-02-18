@@ -9,6 +9,16 @@
       <p class="hero-subtitle">
         브라우저에서 바로 작성하고 PDF로 다운로드하세요
       </p>
+      <div class="hero-badges">
+        <span class="badge">
+          <mat-icon>block</mat-icon>
+          편집 소프트웨어 필요 없음!
+        </span>
+        <span class="badge">
+          <mat-icon>money_off</mat-icon>
+          물론 광고도 없음!
+        </span>
+      </div>
       <div class="hero-stats">
         <div class="stat">
           <span class="stat-number">{{ totalUsers | number }}</span>
@@ -110,6 +120,42 @@
       <a mat-raised-button color="primary" routerLink="/resume-select">
         지금 시작하기
       </a>
+    </div>
+  </section>
+
+  <!-- 유용한 정보 섹션 -->
+  <section class="info-section">
+    <h2 class="section-title">이력서 작성 가이드</h2>
+    <p class="section-subtitle">처음 작성하시는 분들을 위한 유용한 정보</p>
+    <div class="info-grid">
+      <div class="info-item" *ngFor="let info of usefulInfo">
+        <div class="info-icon">
+          <mat-icon>{{ info.icon }}</mat-icon>
+        </div>
+        <h3>{{ info.title }}</h3>
+        <p>{{ info.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ 섹션 -->
+  <section class="faq-section">
+    <h2 class="section-title">자주 묻는 질문</h2>
+    <p class="section-subtitle">궁금한 점을 확인하세요</p>
+    <div class="faq-list">
+      <div
+        class="faq-item"
+        *ngFor="let faq of faqs; let i = index"
+        [class.expanded]="expandedFaq === i"
+        (click)="toggleFaq(i)">
+        <div class="faq-question">
+          <span>{{ faq.question }}</span>
+          <mat-icon>{{ expandedFaq === i ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </div>
+        <div class="faq-answer" *ngIf="expandedFaq === i">
+          {{ faq.answer }}
+        </div>
+      </div>
     </div>
   </section>
 

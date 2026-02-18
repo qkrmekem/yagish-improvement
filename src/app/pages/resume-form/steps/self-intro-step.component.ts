@@ -63,7 +63,7 @@ import { TranslateModule } from '@ngx-translate/core';
       border-radius: 8px;
       margin-top: 32px;
     }
-    h3 { margin: 0 0 24px; color: #1976d2; }
+    h3 { margin: 0 0 24px; color: #00C8AA; }
   `]
 })
 export class SelfIntroStepComponent {

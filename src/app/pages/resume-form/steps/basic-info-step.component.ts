@@ -77,7 +77,7 @@ import { TranslateModule } from '@ngx-translate/core';
     .form-row mat-form-field { flex: 1; min-width: 200px; }
     .full-width { width: 100%; }
     .step-actions { margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end; }
-    h3 { margin: 0 0 24px; color: #1976d2; }
+    h3 { margin: 0 0 24px; color: #00C8AA; }
   `]
 })
 export class BasicInfoStepComponent {

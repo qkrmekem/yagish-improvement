@@ -107,4 +107,54 @@ export class HomeComponent implements OnInit {
   // 더미 통계 (실제로는 API에서 가져옴)
   totalUsers = 1234567;
   todayCompleted = 342;
+
+  // 유용한 정보
+  usefulInfo = [
+    {
+      icon: 'school',
+      title: '학력 작성 가이드',
+      description: '최종 학력부터 역순으로 작성하는 것이 기본입니다'
+    },
+    {
+      icon: 'work',
+      title: '경력 작성 팁',
+      description: '구체적인 성과와 수치를 포함하면 더욱 효과적입니다'
+    },
+    {
+      icon: 'photo_camera',
+      title: '증명사진 가이드',
+      description: '6개월 이내 촬영한 정면 사진을 사용하세요'
+    },
+    {
+      icon: 'tips_and_updates',
+      title: '자기소개서 작성법',
+      description: '지원 회사에 맞춤화된 내용으로 작성하세요'
+    }
+  ];
+
+  // FAQ
+  faqs = [
+    {
+      question: '이력서 작성은 무료인가요?',
+      answer: '네, 모든 기능이 완전 무료입니다. 광고도 없습니다.'
+    },
+    {
+      question: '작성한 이력서는 어디에 저장되나요?',
+      answer: '회원가입 후 로그인하면 클라우드에 자동 저장됩니다. 비회원은 브라우저에만 임시 저장됩니다.'
+    },
+    {
+      question: 'PDF 출력 시 워터마크가 있나요?',
+      answer: '아니요, 워터마크 없이 깔끔하게 출력됩니다.'
+    },
+    {
+      question: '모바일에서도 작성 가능한가요?',
+      answer: '네, 모바일 브라우저에서도 작성 가능합니다. 다만 PC 사용을 권장합니다.'
+    }
+  ];
+
+  expandedFaq: number | null = null;
+
+  toggleFaq(index: number): void {
+    this.expandedFaq = this.expandedFaq === index ? null : index;
+  }
 }
