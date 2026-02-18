@@ -8,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-education-step',
@@ -21,16 +22,17 @@ import { MatCardModule } from '@angular/material/card';
     MatDatepickerModule,
     MatSelectModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    TranslateModule
   ],
   template: `
     <form [formGroup]="form" class="step-form">
-      <h3>학력 사항</h3>
+      <h3>{{ 'EDUCATION.TITLE' | translate }}</h3>
 
       <ng-container formArrayName="schools">
         <mat-card class="item-card" *ngFor="let school of schools.controls; let i = index">
           <mat-card-header>
-            <mat-card-title>학력 {{ i + 1 }}</mat-card-title>
+            <mat-card-title>{{ 'EDUCATION.TITLE' | translate }} {{ i + 1 }}</mat-card-title>
             <button mat-icon-button color="warn" (click)="removeSchool.emit(i)" class="remove-btn" *ngIf="schools.length > 1">
               <mat-icon>delete</mat-icon>
             </button>
@@ -38,39 +40,39 @@ import { MatCardModule } from '@angular/material/card';
           <mat-card-content [formGroupName]="i">
             <div class="form-row">
               <mat-form-field appearance="outline">
-                <mat-label>학교명</mat-label>
-                <input matInput formControlName="schoolName" placeholder="OO대학교">
+                <mat-label>{{ 'EDUCATION.SCHOOL_NAME' | translate }}</mat-label>
+                <input matInput formControlName="schoolName" [placeholder]="'EDUCATION.SCHOOL_PLACEHOLDER' | translate">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>전공/학과</mat-label>
-                <input matInput formControlName="major" placeholder="컴퓨터공학과">
+                <mat-label>{{ 'EDUCATION.MAJOR' | translate }}</mat-label>
+                <input matInput formControlName="major" [placeholder]="'EDUCATION.MAJOR_PLACEHOLDER' | translate">
               </mat-form-field>
             </div>
 
             <div class="form-row">
               <mat-form-field appearance="outline">
-                <mat-label>입학일</mat-label>
+                <mat-label>{{ 'EDUCATION.START_DATE' | translate }}</mat-label>
                 <input matInput [matDatepicker]="startPicker" formControlName="startDate">
                 <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                 <mat-datepicker #startPicker></mat-datepicker>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>졸업일</mat-label>
+                <mat-label>{{ 'EDUCATION.END_DATE' | translate }}</mat-label>
                 <input matInput [matDatepicker]="endPicker" formControlName="endDate">
                 <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                 <mat-datepicker #endPicker></mat-datepicker>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>상태</mat-label>
+                <mat-label>{{ 'EDUCATION.STATUS' | translate }}</mat-label>
                 <mat-select formControlName="status">
-                  <mat-option value="졸업">졸업</mat-option>
-                  <mat-option value="재학">재학</mat-option>
-                  <mat-option value="휴학">휴학</mat-option>
-                  <mat-option value="중퇴">중퇴</mat-option>
-                  <mat-option value="졸업예정">졸업예정</mat-option>
+                  <mat-option value="graduated">{{ 'EDUCATION.STATUS_GRADUATED' | translate }}</mat-option>
+                  <mat-option value="enrolled">{{ 'EDUCATION.STATUS_ENROLLED' | translate }}</mat-option>
+                  <mat-option value="leave">{{ 'EDUCATION.STATUS_LEAVE' | translate }}</mat-option>
+                  <mat-option value="dropout">{{ 'EDUCATION.STATUS_DROPOUT' | translate }}</mat-option>
+                  <mat-option value="expected">{{ 'EDUCATION.STATUS_EXPECTED' | translate }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -79,15 +81,15 @@ import { MatCardModule } from '@angular/material/card';
       </ng-container>
 
       <button mat-stroked-button color="primary" (click)="addSchool.emit()" class="add-btn">
-        <mat-icon>add</mat-icon> 학력 추가
+        <mat-icon>add</mat-icon> {{ 'EDUCATION.ADD_EDUCATION' | translate }}
       </button>
 
       <div class="step-actions">
         <button mat-button (click)="prev.emit()">
-          <mat-icon>arrow_back</mat-icon> 이전
+          <mat-icon>arrow_back</mat-icon> {{ 'COMMON.PREV' | translate }}
         </button>
         <button mat-raised-button color="primary" (click)="next.emit()">
-          다음 <mat-icon>arrow_forward</mat-icon>
+          {{ 'COMMON.NEXT' | translate }} <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </form>

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 interface ResumeType {
   id: string;
@@ -33,7 +33,7 @@ interface ResumeType {
   templateUrl: './resume-select.component.html',
   styleUrl: './resume-select.component.scss'
 })
-export class ResumeSelectComponent {
+export class ResumeSelectComponent implements OnInit {
   resumeTypes: ResumeType[] = [
     {
       id: 'standard',
@@ -64,13 +64,35 @@ export class ResumeSelectComponent {
 
   selectedResumeType: ResumeType = this.resumeTypes[0];
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const type = params['type'];
+      if (type) {
+        const found = this.resumeTypes.find(r => r.id === type);
+        if (found) {
+          this.selectedResumeType = found;
+        }
+      }
+    });
+  }
 
   onResumeTypeChange(resumeId: string): void {
     const selected = this.resumeTypes.find(r => r.id === resumeId);
     if (selected) {
       this.selectedResumeType = selected;
     }
+  }
+
+  goToResumeForm(): void {
+    this.router.navigate(['/resume-form'], {
+      queryParams: { type: this.selectedResumeType.id }
+    });
   }
 
   openPreviewDialog(): void {

@@ -38,7 +38,8 @@ html, body {
 }
 
 // Lightbox dialog 스타일
-.lightbox-dialog {
+.lightbox-dialog,
+.preview-lightbox-dialog {
   .mat-mdc-dialog-container {
     padding: 0;
     background: transparent;

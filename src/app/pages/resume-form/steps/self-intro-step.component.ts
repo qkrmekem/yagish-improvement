@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-self-intro-step',
@@ -15,38 +16,39 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   template: `
     <form [formGroup]="form" class="step-form">
-      <h3>자기소개서</h3>
+      <h3>{{ 'SELF_INTRO.TITLE' | translate }}</h3>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>지원 동기</mat-label>
-        <textarea matInput formControlName="motivation" rows="5" placeholder="지원 동기를 작성해주세요"></textarea>
-        <mat-hint>500자 이내</mat-hint>
+        <mat-label>{{ 'SELF_INTRO.MOTIVATION' | translate }}</mat-label>
+        <textarea matInput formControlName="motivation" rows="5" [placeholder]="'SELF_INTRO.MOTIVATION_PLACEHOLDER' | translate"></textarea>
+        <mat-hint>{{ 'SELF_INTRO.CHAR_LIMIT' | translate }}</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>성격의 장단점</mat-label>
-        <textarea matInput formControlName="strengths" rows="5" placeholder="본인의 장점과 단점을 작성해주세요"></textarea>
-        <mat-hint>500자 이내</mat-hint>
+        <mat-label>{{ 'SELF_INTRO.STRENGTHS' | translate }}</mat-label>
+        <textarea matInput formControlName="strengths" rows="5" [placeholder]="'SELF_INTRO.STRENGTHS_PLACEHOLDER' | translate"></textarea>
+        <mat-hint>{{ 'SELF_INTRO.CHAR_LIMIT' | translate }}</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>취미 / 특기</mat-label>
-        <textarea matInput formControlName="hobbies" rows="3" placeholder="취미나 특기를 작성해주세요"></textarea>
+        <mat-label>{{ 'SELF_INTRO.HOBBIES' | translate }}</mat-label>
+        <textarea matInput formControlName="hobbies" rows="3" [placeholder]="'SELF_INTRO.HOBBIES_PLACEHOLDER' | translate"></textarea>
       </mat-form-field>
 
       <div class="step-actions final-actions">
         <button mat-button (click)="prev.emit()">
-          <mat-icon>arrow_back</mat-icon> 이전
+          <mat-icon>arrow_back</mat-icon> {{ 'COMMON.PREV' | translate }}
         </button>
         <button mat-raised-button color="accent" (click)="preview.emit()">
-          <mat-icon>preview</mat-icon> 미리보기
+          <mat-icon>preview</mat-icon> {{ 'COMMON.PREVIEW' | translate }}
         </button>
         <button mat-raised-button color="primary" (click)="next.emit()">
-          다음 <mat-icon>arrow_forward</mat-icon>
+          {{ 'COMMON.NEXT' | translate }} <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </form>

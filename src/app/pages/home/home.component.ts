@@ -1,0 +1,110 @@
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+
+interface ResumeFormat {
+  id: string;
+  name: string;
+  description: string;
+  features: string[];
+  recommended?: boolean;
+  previewImage: string;
+}
+
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
+})
+export class HomeComponent implements OnInit {
+  selectedType = signal<string | null>(null);
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['type']) {
+        this.selectedType.set(params['type']);
+      }
+    });
+  }
+
+  resumeFormats: ResumeFormat[] = [
+    {
+      id: 'standard',
+      name: '스탠다드 이력서',
+      description: '회사 입사용 A4 2장 표준 이력서',
+      features: ['지원동기 포함', '특기 기재란', '학력/경력 상세 분류'],
+      recommended: true,
+      previewImage: 'https://www.yagish.com/kr/resume/static/img/formats/sample/rirekisho_kr1_01.png'
+    },
+    {
+      id: 'original',
+      name: '오리지널 이력서',
+      description: 'Yagish 한정! 차별화된 디자인',
+      features: ['A4 2장 이상', '모던 디자인', '자유 양식'],
+      previewImage: 'https://www.yagish.com/kr/resume/static/img/formats/sample/rirekisho_kr1_02.png'
+    },
+    {
+      id: 'career',
+      name: '경력기술서',
+      description: '경력직 지원자를 위한 양식',
+      features: ['목적별 작성 가능', '프로젝트 상세 기술', '성과 중심'],
+      previewImage: 'https://www.yagish.com/kr/resume/static/img/formats/sample/rirekisho_kr1_01.png'
+    }
+  ];
+
+  features = [
+    {
+      icon: 'cloud_sync',
+      title: '회원가입으로 백업기능',
+      description: '로그인하면 작성 내용이 자동 저장되어 언제든 이어서 작성할 수 있습니다'
+    },
+    {
+      icon: 'edit_note',
+      title: '무료로 이력서 간단입력',
+      description: '워드같은 편집소프트가 없어도 필요사항 입력만으로 누구나 간단하게 이력서를 브라우저에서 작성'
+    },
+    {
+      icon: 'picture_as_pdf',
+      title: 'PDF로 저장 가능',
+      description: '완성된 이력서를 PDF로 출력할 수 있는 광고없는 무료서비스'
+    }
+  ];
+
+  steps = [
+    {
+      number: 1,
+      title: '양식 선택',
+      description: '스탠다드, 오리지널, 경력기술서 등 목적에 맞는 양식을 선택하세요',
+      icon: 'description'
+    },
+    {
+      number: 2,
+      title: '이력서 만들기',
+      description: '항목별로 입력만 하면 자동으로 이력서가 완성됩니다',
+      icon: 'edit'
+    },
+    {
+      number: 3,
+      title: 'PDF 출력',
+      description: '완성된 이력서를 PDF 파일로 다운로드하여 지원하세요',
+      icon: 'download'
+    }
+  ];
+
+  // 더미 통계 (실제로는 API에서 가져옴)
+  totalUsers = 1234567;
+  todayCompleted = 342;
+}

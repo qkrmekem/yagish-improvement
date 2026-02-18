@@ -1,11 +1,16 @@
 <div class="resume-form-container">
-  <!-- 언어 선택 및 날짜 포맷 설정 (개선점 6) -->
+  <!-- 헤더 영역 -->
   <div class="header-controls">
-    <h1>{{ 'RESUME.TITLE' | translate }}</h1>
-    <div class="language-selector">
-      <div class="improvement-badge-inline">
-        <span class="badge">{{ 'IMPROVEMENT.BADGE' | translate }} 6</span> {{ 'IMPROVEMENT.DATE_FORMAT' | translate }}
+    <div class="header-left">
+      <a mat-icon-button routerLink="/resume-select" [queryParams]="{type: resumeType()}" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+      <div class="title-group">
+        <h1>{{ resumeTypeName() }}</h1>
+        <span class="subtitle">{{ 'RESUME.TITLE' | translate }}</span>
       </div>
+    </div>
+    <div class="language-selector">
       <mat-form-field appearance="outline">
         <mat-label>{{ 'RESUME.LANGUAGE_FORMAT' | translate }}</mat-label>
         <mat-select [value]="currentLanguage()" (selectionChange)="changeLanguage($event.value)">

@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-basic-info-step',
@@ -17,32 +18,33 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   template: `
     <form [formGroup]="form" class="step-form">
-      <h3>기본 정보 입력</h3>
+      <h3>{{ 'BASIC_INFO.TITLE' | translate }}</h3>
 
       <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>이름</mat-label>
-          <input matInput formControlName="name" placeholder="홍길동">
+          <mat-label>{{ 'BASIC_INFO.NAME' | translate }}</mat-label>
+          <input matInput formControlName="name" [placeholder]="'BASIC_INFO.NAME_PLACEHOLDER' | translate">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>이메일</mat-label>
-          <input matInput formControlName="email" type="email" placeholder="example@email.com">
+          <mat-label>{{ 'BASIC_INFO.EMAIL' | translate }}</mat-label>
+          <input matInput formControlName="email" type="email" [placeholder]="'BASIC_INFO.EMAIL_PLACEHOLDER' | translate">
         </mat-form-field>
       </div>
 
       <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>연락처</mat-label>
-          <input matInput formControlName="phone" placeholder="010-1234-5678">
+          <mat-label>{{ 'BASIC_INFO.PHONE' | translate }}</mat-label>
+          <input matInput formControlName="phone" [placeholder]="'BASIC_INFO.PHONE_PLACEHOLDER' | translate">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>생년월일</mat-label>
+          <mat-label>{{ 'BASIC_INFO.BIRTH_DATE' | translate }}</mat-label>
           <input matInput [matDatepicker]="birthPicker" formControlName="birthDate">
           <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
           <mat-datepicker #birthPicker></mat-datepicker>
@@ -51,12 +53,12 @@ import { MatIconModule } from '@angular/material/icon';
       </div>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>주소</mat-label>
-        <input matInput formControlName="address" placeholder="서울특별시 강남구">
+        <mat-label>{{ 'BASIC_INFO.ADDRESS' | translate }}</mat-label>
+        <input matInput formControlName="address" [placeholder]="'BASIC_INFO.ADDRESS_PLACEHOLDER' | translate">
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>이력서 작성일</mat-label>
+        <mat-label>{{ 'BASIC_INFO.RESUME_DATE' | translate }}</mat-label>
         <input matInput [matDatepicker]="resumeDatePicker" formControlName="resumeDate">
         <mat-datepicker-toggle matSuffix [for]="resumeDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #resumeDatePicker></mat-datepicker>
@@ -64,7 +66,7 @@ import { MatIconModule } from '@angular/material/icon';
 
       <div class="step-actions">
         <button mat-raised-button color="primary" (click)="next.emit()">
-          다음 <mat-icon>arrow_forward</mat-icon>
+          {{ 'COMMON.NEXT' | translate }} <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </form>

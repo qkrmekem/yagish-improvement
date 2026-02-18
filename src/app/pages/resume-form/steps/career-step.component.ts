@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-career-step',
@@ -19,16 +20,17 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatDatepickerModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    TranslateModule
   ],
   template: `
     <form [formGroup]="form" class="step-form">
-      <h3>경력 사항</h3>
+      <h3>{{ 'CAREER.TITLE' | translate }}</h3>
 
       <ng-container formArrayName="careers">
         <mat-card class="item-card" *ngFor="let career of careers.controls; let i = index">
           <mat-card-header>
-            <mat-card-title>경력 {{ i + 1 }}</mat-card-title>
+            <mat-card-title>{{ 'CAREER.TITLE' | translate }} {{ i + 1 }}</mat-card-title>
             <button mat-icon-button color="warn" (click)="removeCareer.emit(i)" class="remove-btn" *ngIf="careers.length > 1">
               <mat-icon>delete</mat-icon>
             </button>
@@ -36,26 +38,26 @@ import { MatCardModule } from '@angular/material/card';
           <mat-card-content [formGroupName]="i">
             <div class="form-row">
               <mat-form-field appearance="outline">
-                <mat-label>회사명</mat-label>
-                <input matInput formControlName="companyName" placeholder="OO회사">
+                <mat-label>{{ 'CAREER.COMPANY_NAME' | translate }}</mat-label>
+                <input matInput formControlName="companyName" [placeholder]="'CAREER.COMPANY_PLACEHOLDER' | translate">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>직책/직위</mat-label>
-                <input matInput formControlName="position" placeholder="개발자">
+                <mat-label>{{ 'CAREER.POSITION' | translate }}</mat-label>
+                <input matInput formControlName="position" [placeholder]="'CAREER.POSITION_PLACEHOLDER' | translate">
               </mat-form-field>
             </div>
 
             <div class="form-row">
               <mat-form-field appearance="outline">
-                <mat-label>입사일</mat-label>
+                <mat-label>{{ 'CAREER.START_DATE' | translate }}</mat-label>
                 <input matInput [matDatepicker]="startPicker" formControlName="startDate">
                 <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                 <mat-datepicker #startPicker></mat-datepicker>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>퇴사일</mat-label>
+                <mat-label>{{ 'CAREER.END_DATE' | translate }}</mat-label>
                 <input matInput [matDatepicker]="endPicker" formControlName="endDate">
                 <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                 <mat-datepicker #endPicker></mat-datepicker>
@@ -63,23 +65,23 @@ import { MatCardModule } from '@angular/material/card';
             </div>
 
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>담당 업무</mat-label>
-              <textarea matInput formControlName="description" rows="3" placeholder="담당했던 업무를 입력하세요"></textarea>
+              <mat-label>{{ 'CAREER.DESCRIPTION' | translate }}</mat-label>
+              <textarea matInput formControlName="description" rows="3" [placeholder]="'CAREER.DESCRIPTION_PLACEHOLDER' | translate"></textarea>
             </mat-form-field>
           </mat-card-content>
         </mat-card>
       </ng-container>
 
       <button mat-stroked-button color="primary" (click)="addCareer.emit()" class="add-btn">
-        <mat-icon>add</mat-icon> 경력 추가
+        <mat-icon>add</mat-icon> {{ 'CAREER.ADD_CAREER' | translate }}
       </button>
 
       <div class="step-actions">
         <button mat-button (click)="prev.emit()">
-          <mat-icon>arrow_back</mat-icon> 이전
+          <mat-icon>arrow_back</mat-icon> {{ 'COMMON.PREV' | translate }}
         </button>
         <button mat-raised-button color="primary" (click)="next.emit()">
-          다음 <mat-icon>arrow_forward</mat-icon>
+          {{ 'COMMON.NEXT' | translate }} <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </form>

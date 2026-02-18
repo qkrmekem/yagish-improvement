@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-placeholder-step',
@@ -9,7 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   template: `
     <div class="placeholder-step">
@@ -22,10 +24,10 @@ import { MatIconModule } from '@angular/material/icon';
 
       <div class="step-actions">
         <button mat-stroked-button (click)="prev.emit()" *ngIf="showPrev">
-          <mat-icon>arrow_back</mat-icon> 이전
+          <mat-icon>arrow_back</mat-icon> {{ 'COMMON.PREV' | translate }}
         </button>
         <button mat-raised-button color="primary" (click)="next.emit()" *ngIf="showNext">
-          다음 <mat-icon>arrow_forward</mat-icon>
+          {{ 'COMMON.NEXT' | translate }} <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </div>

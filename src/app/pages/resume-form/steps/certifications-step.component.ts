@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-certifications-step',
@@ -23,22 +24,23 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSelectModule,
     MatIconModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    TranslateModule
   ],
   template: `
     <form [formGroup]="form" class="step-form">
       <div class="improvement-badge">
-        <span class="badge">개선 5</span> 자격증과 어학을 별도 폼으로 분리하여 관리가 용이합니다
+        <span class="badge">{{ 'IMPROVEMENT.BADGE' | translate }} 5</span> {{ 'IMPROVEMENT.SEPARATE_FORMS' | translate }}
       </div>
 
       <!-- 자격증 섹션 -->
       <section class="section">
-        <h3><mat-icon>verified</mat-icon> 자격증</h3>
+        <h3><mat-icon>verified</mat-icon> {{ 'CERTIFICATIONS.TITLE' | translate }}</h3>
 
         <ng-container formArrayName="certifications">
           <mat-card class="item-card" *ngFor="let cert of certifications.controls; let i = index">
             <mat-card-header>
-              <mat-card-title>자격증 {{ i + 1 }}</mat-card-title>
+              <mat-card-title>{{ 'CERTIFICATIONS.TITLE' | translate }} {{ i + 1 }}</mat-card-title>
               <button mat-icon-button color="warn" (click)="removeCertification.emit(i)" *ngIf="certifications.length > 1">
                 <mat-icon>delete</mat-icon>
               </button>
@@ -46,17 +48,17 @@ import { MatDividerModule } from '@angular/material/divider';
             <mat-card-content [formGroupName]="i">
               <div class="form-row">
                 <mat-form-field appearance="outline">
-                  <mat-label>자격증명</mat-label>
-                  <input matInput formControlName="certName" placeholder="정보처리기사">
+                  <mat-label>{{ 'CERTIFICATIONS.CERT_NAME' | translate }}</mat-label>
+                  <input matInput formControlName="certName" [placeholder]="'CERTIFICATIONS.CERT_PLACEHOLDER' | translate">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                  <mat-label>발급기관</mat-label>
-                  <input matInput formControlName="issuer" placeholder="한국산업인력공단">
+                  <mat-label>{{ 'CERTIFICATIONS.ISSUER' | translate }}</mat-label>
+                  <input matInput formControlName="issuer" [placeholder]="'CERTIFICATIONS.ISSUER_PLACEHOLDER' | translate">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                  <mat-label>취득일</mat-label>
+                  <mat-label>{{ 'CERTIFICATIONS.ACQUIRED_DATE' | translate }}</mat-label>
                   <input matInput [matDatepicker]="certDatePicker" formControlName="acquiredDate">
                   <mat-datepicker-toggle matSuffix [for]="certDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #certDatePicker></mat-datepicker>
@@ -67,7 +69,7 @@ import { MatDividerModule } from '@angular/material/divider';
         </ng-container>
 
         <button mat-stroked-button color="primary" (click)="addCertification.emit()" class="add-btn">
-          <mat-icon>add</mat-icon> 자격증 추가
+          <mat-icon>add</mat-icon> {{ 'CERTIFICATIONS.ADD_CERT' | translate }}
         </button>
       </section>
 
@@ -75,12 +77,12 @@ import { MatDividerModule } from '@angular/material/divider';
 
       <!-- 어학 섹션 -->
       <section class="section">
-        <h3><mat-icon>language</mat-icon> 어학 능력</h3>
+        <h3><mat-icon>language</mat-icon> {{ 'LANGUAGE_SKILLS.TITLE' | translate }}</h3>
 
         <ng-container formArrayName="languages">
           <mat-card class="item-card" *ngFor="let lang of languageSkills.controls; let i = index">
             <mat-card-header>
-              <mat-card-title>어학 {{ i + 1 }}</mat-card-title>
+              <mat-card-title>{{ 'LANGUAGE_SKILLS.TITLE' | translate }} {{ i + 1 }}</mat-card-title>
               <button mat-icon-button color="warn" (click)="removeLanguage.emit(i)" *ngIf="languageSkills.length > 1">
                 <mat-icon>delete</mat-icon>
               </button>
@@ -88,14 +90,14 @@ import { MatDividerModule } from '@angular/material/divider';
             <mat-card-content [formGroupName]="i">
               <div class="form-row">
                 <mat-form-field appearance="outline">
-                  <mat-label>언어</mat-label>
+                  <mat-label>{{ 'LANGUAGE_SKILLS.LANGUAGE' | translate }}</mat-label>
                   <mat-select formControlName="language">
                     <mat-option *ngFor="let lang of languageOptions" [value]="lang">{{ lang }}</mat-option>
                   </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                  <mat-label>시험명</mat-label>
+                  <mat-label>{{ 'LANGUAGE_SKILLS.EXAM_NAME' | translate }}</mat-label>
                   <mat-select formControlName="examName">
                     <mat-option *ngFor="let exam of examOptions" [value]="exam">{{ exam }}</mat-option>
                   </mat-select>
@@ -104,19 +106,19 @@ import { MatDividerModule } from '@angular/material/divider';
 
               <div class="form-row">
                 <mat-form-field appearance="outline">
-                  <mat-label>등급</mat-label>
+                  <mat-label>{{ 'LANGUAGE_SKILLS.GRADE' | translate }}</mat-label>
                   <mat-select formControlName="grade">
                     <mat-option *ngFor="let grade of gradeOptions" [value]="grade">{{ grade }}</mat-option>
                   </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                  <mat-label>점수</mat-label>
+                  <mat-label>{{ 'LANGUAGE_SKILLS.SCORE' | translate }}</mat-label>
                   <input matInput formControlName="score" placeholder="990">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                  <mat-label>취득일</mat-label>
+                  <mat-label>{{ 'LANGUAGE_SKILLS.ACQUIRED_DATE' | translate }}</mat-label>
                   <input matInput [matDatepicker]="langDatePicker" formControlName="acquiredDate">
                   <mat-datepicker-toggle matSuffix [for]="langDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #langDatePicker></mat-datepicker>
@@ -127,16 +129,16 @@ import { MatDividerModule } from '@angular/material/divider';
         </ng-container>
 
         <button mat-stroked-button color="primary" (click)="addLanguage.emit()" class="add-btn">
-          <mat-icon>add</mat-icon> 어학 추가
+          <mat-icon>add</mat-icon> {{ 'LANGUAGE_SKILLS.ADD_LANGUAGE' | translate }}
         </button>
       </section>
 
       <div class="step-actions">
         <button mat-button (click)="prev.emit()">
-          <mat-icon>arrow_back</mat-icon> 이전
+          <mat-icon>arrow_back</mat-icon> {{ 'COMMON.PREV' | translate }}
         </button>
         <button mat-raised-button color="primary" (click)="next.emit()">
-          다음 <mat-icon>arrow_forward</mat-icon>
+          {{ 'COMMON.NEXT' | translate }} <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </form>

@@ -12,9 +12,36 @@
   gap: 16px;
   margin-bottom: 24px;
 
-  h1 {
-    margin: 0;
-    color: #333;
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .back-btn {
+      color: #666;
+
+      &:hover {
+        color: #1976d2;
+      }
+    }
+
+    .title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      h1 {
+        margin: 0;
+        color: #333;
+        font-size: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+        color: #666;
+      }
+    }
   }
 
   .language-selector {

@@ -1,6 +1,7 @@
-import { Component, signal, computed, ViewChild, ViewContainerRef, ComponentRef, Type, effect, AfterViewInit } from '@angular/core';
+import { Component, signal, computed, ViewChild, ViewContainerRef, ComponentRef, Type, effect, AfterViewInit, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +24,15 @@ import { CertificationsStepComponent } from './steps/certifications-step.compone
 import { SelfIntroStepComponent } from './steps/self-intro-step.component';
 import { PlaceholderStepComponent } from './steps/placeholder-step.component';
 
+// 이력서 양식 타입
+type ResumeType = 'standard' | 'original' | 'career';
+
+const RESUME_TYPE_NAMES: Record<ResumeType, string> = {
+  standard: '스탠다드 이력서',
+  original: '오리지널 이력서',
+  career: '경력기술서'
+};
+
 @Component({
   selector: 'app-resume-form',
   standalone: true,
@@ -30,6 +40,7 @@ import { PlaceholderStepComponent } from './steps/placeholder-step.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -46,7 +57,7 @@ import { PlaceholderStepComponent } from './steps/placeholder-step.component';
   templateUrl: './resume-form.component.html',
   styleUrl: './resume-form.component.scss'
 })
-export class ResumeFormComponent implements AfterViewInit {
+export class ResumeFormComponent implements AfterViewInit, OnInit {
   @ViewChild('stepContainer', { read: ViewContainerRef }) stepContainer!: ViewContainerRef;
 
   private currentComponentRef: ComponentRef<any> | null = null;
@@ -54,6 +65,10 @@ export class ResumeFormComponent implements AfterViewInit {
   isVerticalStepper = signal(true);
   currentLanguage = signal<'ko' | 'ja' | 'en'>('ko');
   currentStep = signal(0);
+
+  // 이력서 양식 타입
+  resumeType = signal<ResumeType>('standard');
+  resumeTypeName = computed(() => RESUME_TYPE_NAMES[this.resumeType()]);
 
   // 스텝 정의 (labelKey는 번역 키) - 야기시 실제 스텝 구조 반영
   steps: Array<{ labelKey: string; icon: string; component: any; isPlaceholder?: boolean }> = [
@@ -103,7 +118,8 @@ export class ResumeFormComponent implements AfterViewInit {
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
     private dateAdapter: DateAdapter<Date>,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private route: ActivatedRoute
   ) {
     // 반응형: 768px 이하에서는 가로 스텝퍼
     this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
@@ -145,6 +161,14 @@ export class ResumeFormComponent implements AfterViewInit {
         this.loadStepComponent(step);
       }
     });
+  }
+
+  ngOnInit(): void {
+    // 쿼리 파라미터에서 이력서 타입 읽기 (snapshot 사용)
+    const type = this.route.snapshot.queryParamMap.get('type') as ResumeType;
+    if (type && ['standard', 'original', 'career'].includes(type)) {
+      this.resumeType.set(type);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -385,9 +409,11 @@ export class ResumeFormComponent implements AfterViewInit {
 
     this.dialog.open(PreviewDialogComponent, {
       data: formData,
-      width: '90vw',
-      maxWidth: '800px',
-      maxHeight: '90vh'
+      panelClass: 'preview-lightbox-dialog',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      width: '100vw',
+      height: '100vh'
     });
   }
 
@@ -406,107 +432,282 @@ export class ResumeFormComponent implements AfterViewInit {
 
 // 미리보기 다이얼로그 컴포넌트
 import { Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-preview-dialog',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatDialogModule, MatDividerModule],
+  imports: [CommonModule, MatButtonModule, MatDialogModule, MatDividerModule, MatIconModule],
   template: `
-    <h2 mat-dialog-title>이력서 미리보기</h2>
-    <mat-dialog-content class="preview-content">
-      <div class="resume-preview">
-        <section class="preview-section">
-          <h3>기본 정보</h3>
-          <mat-divider></mat-divider>
-          <p><strong>이름:</strong> {{ data.basicInfo.name || '미입력' }}</p>
-          <p><strong>이메일:</strong> {{ data.basicInfo.email || '미입력' }}</p>
-          <p><strong>연락처:</strong> {{ data.basicInfo.phone || '미입력' }}</p>
-          <p><strong>주소:</strong> {{ data.basicInfo.address || '미입력' }}</p>
-        </section>
-
-        <section class="preview-section">
-          <h3>학력</h3>
-          <mat-divider></mat-divider>
-          <div class="preview-item" *ngFor="let school of data.education.schools">
-            <p><strong>{{ school.schoolName || '학교명 미입력' }}</strong> - {{ school.major }}</p>
-            <p class="sub-text">{{ school.status }}</p>
-          </div>
-        </section>
-
-        <section class="preview-section">
-          <h3>경력</h3>
-          <mat-divider></mat-divider>
-          <div class="preview-item" *ngFor="let career of data.career.careers">
-            <p><strong>{{ career.companyName || '회사명 미입력' }}</strong> - {{ career.position }}</p>
-            <p class="sub-text">{{ career.description }}</p>
-          </div>
-        </section>
-
-        <section class="preview-section">
-          <h3>자격증</h3>
-          <mat-divider></mat-divider>
-          <div class="preview-item" *ngFor="let cert of data.certifications.certifications">
-            <p><strong>{{ cert.certName || '자격증명 미입력' }}</strong></p>
-            <p class="sub-text">발행처: {{ cert.issuer }}</p>
-          </div>
-        </section>
-
-        <section class="preview-section">
-          <h3>어학</h3>
-          <mat-divider></mat-divider>
-          <div class="preview-item" *ngFor="let lang of data.certifications.languages">
-            <p><strong>{{ lang.language }}</strong> - {{ lang.examName }}</p>
-            <p class="sub-text">등급: {{ lang.grade }} / 점수: {{ lang.score }}</p>
-          </div>
-        </section>
-
-        <section class="preview-section">
-          <h3>자기소개</h3>
-          <mat-divider></mat-divider>
-          <p><strong>지원동기:</strong></p>
-          <p>{{ data.selfIntro.motivation || '미입력' }}</p>
-          <p><strong>장점:</strong></p>
-          <p>{{ data.selfIntro.strengths || '미입력' }}</p>
-        </section>
+    <div class="lightbox-container">
+      <!-- 상단 툴바 -->
+      <div class="lightbox-toolbar">
+        <span class="title">이력서 미리보기</span>
+        <div class="toolbar-actions">
+          <button mat-icon-button (click)="zoomOut()" matTooltip="축소">
+            <mat-icon>zoom_out</mat-icon>
+          </button>
+          <span class="zoom-level">{{ zoomLevel }}%</span>
+          <button mat-icon-button (click)="zoomIn()" matTooltip="확대">
+            <mat-icon>zoom_in</mat-icon>
+          </button>
+          <button mat-icon-button (click)="downloadPdf()" matTooltip="PDF 다운로드">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button (click)="close()" matTooltip="닫기">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
       </div>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>닫기</button>
-      <button mat-raised-button color="primary" mat-dialog-close>PDF 다운로드</button>
-    </mat-dialog-actions>
+
+      <!-- PDF 스타일 콘텐츠 -->
+      <div class="lightbox-content">
+        <div class="resume-paper" [style.transform]="'scale(' + zoomLevel / 100 + ')'">
+          <div class="paper-header">
+            <h1>이력서</h1>
+            <p class="date">작성일: {{ formatDate(data.basicInfo.resumeDate) }}</p>
+          </div>
+
+          <section class="paper-section">
+            <h2>기본 정보</h2>
+            <div class="info-grid">
+              <div class="info-row">
+                <span class="label">이름</span>
+                <span class="value">{{ data.basicInfo.name || '미입력' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">이메일</span>
+                <span class="value">{{ data.basicInfo.email || '미입력' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">연락처</span>
+                <span class="value">{{ data.basicInfo.phone || '미입력' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">주소</span>
+                <span class="value">{{ data.basicInfo.address || '미입력' }}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="paper-section">
+            <h2>학력</h2>
+            <div class="item-list">
+              <div class="item" *ngFor="let school of data.education.schools">
+                <strong>{{ school.schoolName || '학교명 미입력' }}</strong>
+                <span>{{ school.major }} ({{ school.status }})</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="paper-section">
+            <h2>경력</h2>
+            <div class="item-list">
+              <div class="item" *ngFor="let career of data.career.careers">
+                <strong>{{ career.companyName || '회사명 미입력' }}</strong>
+                <span>{{ career.position }}</span>
+                <p class="description">{{ career.description }}</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="paper-section">
+            <h2>자격증</h2>
+            <div class="item-list">
+              <div class="item" *ngFor="let cert of data.certifications.certifications">
+                <strong>{{ cert.certName || '자격증명 미입력' }}</strong>
+                <span>{{ cert.issuer }}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="paper-section">
+            <h2>어학</h2>
+            <div class="item-list">
+              <div class="item" *ngFor="let lang of data.certifications.languages">
+                <strong>{{ lang.language }} - {{ lang.examName }}</strong>
+                <span>등급: {{ lang.grade }} | 점수: {{ lang.score }}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="paper-section">
+            <h2>자기소개</h2>
+            <div class="text-block">
+              <h4>지원동기</h4>
+              <p>{{ data.selfIntro.motivation || '미입력' }}</p>
+            </div>
+            <div class="text-block">
+              <h4>장점</h4>
+              <p>{{ data.selfIntro.strengths || '미입력' }}</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
   `,
   styles: [`
-    .preview-content {
-      max-height: 70vh;
-      overflow-y: auto;
+    :host {
+      display: block;
+      height: 100vh;
+      width: 100vw;
     }
-    .resume-preview {
-      padding: 16px;
-      background: #fafafa;
-      border-radius: 8px;
+    .lightbox-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #525659;
+      display: flex;
+      flex-direction: column;
     }
-    .preview-section {
+    .lightbox-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      background: #323639;
+      color: white;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      button {
+        color: white;
+      }
+    }
+    .zoom-level {
+      min-width: 50px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .lightbox-content {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+    .resume-paper {
+      background: white;
+      width: 210mm;
+      min-height: 297mm;
+      padding: 20mm;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transform-origin: top center;
+    }
+    .paper-header {
+      text-align: center;
       margin-bottom: 24px;
-      h3 {
-        color: #1976d2;
-        margin-bottom: 8px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #333;
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
       }
-      mat-divider {
-        margin-bottom: 12px;
+      .date {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
       }
     }
-    .preview-item {
+    .paper-section {
+      margin-bottom: 20px;
+      h2 {
+        font-size: 16px;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 6px;
+        margin: 0 0 12px;
+      }
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .info-row {
+      display: flex;
+      gap: 12px;
+      .label {
+        font-weight: 500;
+        min-width: 60px;
+        color: #666;
+      }
+      .value {
+        flex: 1;
+      }
+    }
+    .item-list .item {
       padding: 8px 0;
       border-bottom: 1px solid #eee;
+      strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+      span {
+        color: #666;
+        font-size: 14px;
+      }
+      .description {
+        margin: 8px 0 0;
+        font-size: 14px;
+        color: #444;
+      }
     }
-    .sub-text {
-      color: #666;
-      font-size: 14px;
-      margin-top: 4px;
+    .text-block {
+      margin-bottom: 16px;
+      h4 {
+        font-size: 14px;
+        margin: 0 0 8px;
+        color: #333;
+      }
+      p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
     }
   `]
 })
 export class PreviewDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+  zoomLevel = 100;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<PreviewDialogComponent>
+  ) {}
+
+  zoomIn(): void {
+    if (this.zoomLevel < 200) {
+      this.zoomLevel += 25;
+    }
+  }
+
+  zoomOut(): void {
+    if (this.zoomLevel > 50) {
+      this.zoomLevel -= 25;
+    }
+  }
+
+  downloadPdf(): void {
+    alert('PDF 다운로드 기능 (구현 예정)');
+  }
+
+  close(): void {
+    this.dialogRef.close();
+  }
+
+  formatDate(date: Date | string): string {
+    if (!date) return '미입력';
+    const d = new Date(date);
+    return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+  }
 }
