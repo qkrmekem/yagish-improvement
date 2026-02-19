@@ -76,3 +76,23 @@ mat-card-actions {
   justify-content: flex-end;
   padding: 16px !important;
 }
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .preview-image {
+    max-height: 350px;
+  }
+
+  mat-card-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

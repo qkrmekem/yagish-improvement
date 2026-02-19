@@ -62,7 +62,7 @@
     <!-- 미리보기 탭 -->
     <mat-tab [label]="'TABS.PREVIEW' | translate">
       <div class="tab-content preview-tab">
-        
+
         <!-- PDF 생성용 wrapper -->
         <div #resumePreviewWrapper class="resume-preview-wrapper">
           <!-- 기존 한국식 템플릿 (standard, original, career) -->
@@ -151,11 +151,11 @@
             <h1 class="free-form-name">{{ basicInfoForm.get('name')?.value || 'Your Name' }}</h1>
             <p class="free-form-title">{{ careers.length > 0 && careers.controls[0].get('position')?.value ? careers.controls[0].get('position')?.value : 'Professional Title' }}</p>
             <p class="free-form-contact">
-              {{ basicInfoForm.get('email')?.value || 'email@example.com' }} 
-              <span class="separator">|</span> 
+              {{ basicInfoForm.get('email')?.value || 'email@example.com' }}
+              <span class="separator">|</span>
               {{ basicInfoForm.get('phone')?.value || '+82-10-0000-0000' }}
               <ng-container *ngIf="basicInfoForm.get('address')?.value">
-                <span class="separator">|</span> 
+                <span class="separator">|</span>
                 {{ basicInfoForm.get('address')?.value }}
               </ng-container>
             </p>

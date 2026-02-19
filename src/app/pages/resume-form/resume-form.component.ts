@@ -588,11 +588,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
             <h1 class="free-form-name">{{ data.basicInfo.name || 'Your Name' }}</h1>
             <p class="free-form-title">{{ getFirstPosition() }}</p>
             <p class="free-form-contact">
-              {{ data.basicInfo.email || 'email@example.com' }} 
-              <span class="separator">|</span> 
+              {{ data.basicInfo.email || 'email@example.com' }}
+              <span class="separator">|</span>
               {{ data.basicInfo.phone || '+82-10-0000-0000' }}
               <ng-container *ngIf="data.basicInfo.address">
-                <span class="separator">|</span> 
+                <span class="separator">|</span>
                 {{ data.basicInfo.address }}
               </ng-container>
             </p>
@@ -864,6 +864,55 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
       padding-left: 20px;
       li { font-size: 14px; color: #333; line-height: 1.8; }
       .free-form-issuer { color: #666; font-style: italic; }
+    }
+    /* 모바일 반응형 */
+    @media (max-width: 768px) {
+      .lightbox-toolbar {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .title {
+        font-size: 14px;
+        flex: 1;
+        min-width: 100px;
+      }
+      .toolbar-actions {
+        gap: 0;
+      }
+      .zoom-level {
+        min-width: 40px;
+        font-size: 12px;
+      }
+      .lightbox-content {
+        padding: 12px;
+      }
+      .resume-paper {
+        width: 100%;
+        min-width: unset;
+        min-height: unset;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+      .paper-header h1 {
+        font-size: 22px;
+      }
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      .info-row {
+        flex-direction: column;
+        gap: 4px;
+        .label { min-width: unset; }
+      }
+      .free-form-name {
+        font-size: 22px;
+      }
+      .free-form-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
     }
   `]
 })

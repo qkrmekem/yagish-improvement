@@ -137,12 +137,35 @@ footer {
 
 @media (max-width: 768px) {
   mat-toolbar {
+    padding: 0 8px;
+
+    .logo {
+      font-size: 20px;
+    }
+
     .subtitle {
       display: none;
     }
 
-    nav a span {
-      display: none;
+    nav {
+      gap: 4px;
+
+      a {
+        min-width: 40px;
+        padding: 0 8px;
+      }
+
+      a span {
+        display: none;
+      }
+    }
+
+    .language-select {
+      margin-left: 8px;
+
+      mat-form-field {
+        width: 70px;
+      }
     }
   }
 
@@ -157,6 +180,10 @@ footer {
       .improvement-item {
         font-size: 12px;
         padding: 6px 12px;
+
+        span:not(.number) {
+          display: none;
+        }
       }
     }
   }

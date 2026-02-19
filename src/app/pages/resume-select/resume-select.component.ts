@@ -260,6 +260,37 @@ export class ResumeSelectComponent implements OnInit {
       font-size: 16px;
       font-weight: 500;
     }
+    /* 모바일 반응형 */
+    @media (max-width: 768px) {
+      .nav-btn {
+        width: 40px;
+        height: 40px;
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+      }
+      .prev-btn {
+        left: 8px;
+      }
+      .next-btn {
+        right: 8px;
+      }
+      .image-wrapper {
+        max-width: calc(100% - 80px);
+        max-height: calc(100% - 100px);
+      }
+      .bottom-info {
+        padding: 8px 16px;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .resume-name {
+        font-size: 14px;
+      }
+    }
   `]
 })
 export class ResumePreviewDialogComponent {
