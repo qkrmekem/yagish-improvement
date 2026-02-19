@@ -27,6 +27,7 @@
     "CAREER": "履歴",
     "CERTIFICATIONS": "免許・資格",
     "MOTIVATION": "志望動機",
+    "SELF_INTRO": "自己紹介",
     "PREFERENCES": "本人希望",
     "WRITE_DATE": "作成日",
     "CONFIRM": "確認",
@@ -66,11 +67,11 @@
     "COMPANY_NAME": "会社名",
     "COMPANY_PLACEHOLDER": "〇〇株式会社",
     "POSITION": "役職",
-    "POSITION_PLACEHOLDER": "エンジニア",
+    "POSITION_PLACEHOLDER": "Webエンジニア / 主任",
     "START_DATE": "入社日",
     "END_DATE": "退社日",
     "DESCRIPTION": "業務内容",
-    "DESCRIPTION_PLACEHOLDER": "担当した業務を入力してください",
+    "DESCRIPTION_PLACEHOLDER": "例) Webサービスのフロントエンド開発・保守、新機能の企画参加",
     "ADD_CAREER": "職歴追加"
   },
   "CERTIFICATIONS": {
@@ -85,20 +86,24 @@
   "LANGUAGE_SKILLS": {
     "TITLE": "語学能力",
     "LANGUAGE": "言語",
+    "LANGUAGE_PLACEHOLDER": "英語 / 韓国語 / 中国語 など",
     "EXAM_NAME": "試験名",
+    "EXAM_PLACEHOLDER": "TOEIC / 韓国語能力試験 など",
     "GRADE": "等級",
+    "GRADE_PLACEHOLDER": "6級 / 上級 など",
     "SCORE": "点数",
+    "SCORE_PLACEHOLDER": "900点",
     "ACQUIRED_DATE": "取得日",
     "ADD_LANGUAGE": "語学追加"
   },
   "SELF_INTRO": {
     "TITLE": "自己紹介書",
     "MOTIVATION": "志望動機",
-    "MOTIVATION_PLACEHOLDER": "志望動機を記入してください",
+    "MOTIVATION_PLACEHOLDER": "例) 貴社の〇〇サービスを利用し、ユーザー体験の改善に貢献したいと思いました。特にグローバルサービスの展開に興味があり...",
     "STRENGTHS": "長所・短所",
-    "STRENGTHS_PLACEHOLDER": "自分の長所と短所を記入してください",
+    "STRENGTHS_PLACEHOLDER": "例) 長所: 新しい技術を素早く習得し、問題解決に粘り強く取り組みます。\n短所: 完璧を求めるあまり、スケジュール管理に苦労することがあります。",
     "HOBBIES": "趣味・特技",
-    "HOBBIES_PLACEHOLDER": "趣味や特技を記入してください",
+    "HOBBIES_PLACEHOLDER": "例) 読書、ランニング、個人プロジェクト開発",
     "CHAR_LIMIT": "500文字以内"
   },
   "IMPROVEMENT": {

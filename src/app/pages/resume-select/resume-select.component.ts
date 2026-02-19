@@ -59,6 +59,14 @@ export class ResumeSelectComponent implements OnInit {
       previewImages: [
         'https://www.yagish.com/kr/resume/static/img/formats/sample/rirekisho_kr1_01.png'
       ]
+    },
+    {
+      id: 'free-form',
+      name: '자유양식 (Resume)',
+      description: '미국/글로벌 스타일의 자유양식 이력서입니다. 텍스트 중심의 깔끔한 레이아웃으로 해외 취업에 적합합니다.',
+      previewImages: [
+        'https://www.yagish.com/kr/resume/static/img/formats/sample/rirekisho_kr1_01.png'
+      ]
     }
   ];
 

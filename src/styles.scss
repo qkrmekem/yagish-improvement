@@ -93,3 +93,52 @@ html, body {
     }
   }
 }
+
+// 인쇄 시 이력서 미리보기만 표시
+@media print {
+  // 모든 요소 숨김
+  body * {
+    visibility: hidden;
+  }
+
+  // 이력서 미리보기만 표시
+  .resume-preview,
+  .resume-preview *,
+  .free-form-preview,
+  .free-form-preview * {
+    visibility: visible !important;
+  }
+
+  .resume-preview,
+  .free-form-preview {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+
+  // 버튼, 헤더 등 완전히 제거
+  .preview-actions,
+  .header-controls,
+  .improvement-badge,
+  .stepper-nav,
+  .mat-mdc-tab-header,
+  mat-toolbar {
+    display: none !important;
+  }
+
+  // 페이지 설정
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

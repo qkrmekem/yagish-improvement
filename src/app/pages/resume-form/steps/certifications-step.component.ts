@@ -91,30 +91,24 @@ import { TranslateModule } from '@ngx-translate/core';
               <div class="form-row">
                 <mat-form-field appearance="outline">
                   <mat-label>{{ 'LANGUAGE_SKILLS.LANGUAGE' | translate }}</mat-label>
-                  <mat-select formControlName="language">
-                    <mat-option *ngFor="let lang of languageOptions" [value]="lang">{{ lang }}</mat-option>
-                  </mat-select>
+                  <input matInput formControlName="language" [placeholder]="'LANGUAGE_SKILLS.LANGUAGE_PLACEHOLDER' | translate">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                   <mat-label>{{ 'LANGUAGE_SKILLS.EXAM_NAME' | translate }}</mat-label>
-                  <mat-select formControlName="examName">
-                    <mat-option *ngFor="let exam of examOptions" [value]="exam">{{ exam }}</mat-option>
-                  </mat-select>
+                  <input matInput formControlName="examName" [placeholder]="'LANGUAGE_SKILLS.EXAM_PLACEHOLDER' | translate">
                 </mat-form-field>
               </div>
 
               <div class="form-row">
                 <mat-form-field appearance="outline">
                   <mat-label>{{ 'LANGUAGE_SKILLS.GRADE' | translate }}</mat-label>
-                  <mat-select formControlName="grade">
-                    <mat-option *ngFor="let grade of gradeOptions" [value]="grade">{{ grade }}</mat-option>
-                  </mat-select>
+                  <input matInput formControlName="grade" [placeholder]="'LANGUAGE_SKILLS.GRADE_PLACEHOLDER' | translate">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                   <mat-label>{{ 'LANGUAGE_SKILLS.SCORE' | translate }}</mat-label>
-                  <input matInput formControlName="score" placeholder="990">
+                  <input matInput formControlName="score" [placeholder]="'LANGUAGE_SKILLS.SCORE_PLACEHOLDER' | translate">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">

@@ -10,14 +10,7 @@
         <span class="subtitle">{{ 'RESUME.TITLE' | translate }}</span>
       </div>
     </div>
-    <div class="language-selector">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'RESUME.LANGUAGE_FORMAT' | translate }}</mat-label>
-        <mat-select [value]="currentLanguage()" (selectionChange)="changeLanguage($event.value)">
-          <mat-option *ngFor="let lang of languages" [value]="lang.code">{{ lang.label }}</mat-option>
-        </mat-select>
-        <mat-hint>{{ 'RESUME.DATE_FORMAT_EXAMPLE' | translate }}: {{ dateFormats().placeholder }}</mat-hint>
-      </mat-form-field>
+    <div class="header-actions">
       <button mat-raised-button color="primary" class="preview-btn" (click)="openPreview()">
         <mat-icon>preview</mat-icon>
         {{ 'COMMON.PREVIEW' | translate }}
@@ -69,15 +62,19 @@
     <!-- 미리보기 탭 -->
     <mat-tab [label]="'TABS.PREVIEW' | translate">
       <div class="tab-content preview-tab">
-        <div class="resume-preview">
-          <div class="preview-header">
-            <h2>{{ 'RESUME.TITLE' | translate }}</h2>
-            <p class="date-display">{{ 'RESUME.WRITE_DATE' | translate }}: {{ formatDate(basicInfoForm.get('resumeDate')?.value) }}</p>
-          </div>
+        
+        <!-- PDF 생성용 wrapper -->
+        <div #resumePreviewWrapper class="resume-preview-wrapper">
+          <!-- 기존 한국식 템플릿 (standard, original, career) -->
+          <div class="resume-preview" *ngIf="resumeType() !== 'free-form'">
+            <div class="preview-header">
+              <h2>{{ 'RESUME.TITLE' | translate }}</h2>
+              <p class="date-display">{{ 'RESUME.WRITE_DATE' | translate }}: {{ formatDate(basicInfoForm.get('resumeDate')?.value) }}</p>
+            </div>
 
-          <section class="preview-section">
-            <h3>{{ 'STEPS.BASIC_INFO' | translate }}</h3>
-            <mat-divider></mat-divider>
+            <section class="preview-section">
+              <h3>{{ 'STEPS.BASIC_INFO' | translate }}</h3>
+              <mat-divider></mat-divider>
             <div class="info-grid">
               <div class="info-item">
                 <label>{{ 'BASIC_INFO.NAME' | translate }}</label>
@@ -147,11 +144,92 @@
           </section>
         </div>
 
+        <!-- 자유양식 (US 스타일 Resume) -->
+        <div class="resume-preview free-form-preview" *ngIf="resumeType() === 'free-form'">
+          <!-- 헤더: 이름, 직함, 연락처 (사진 없음, 중앙 정렬) -->
+          <div class="free-form-header">
+            <h1 class="free-form-name">{{ basicInfoForm.get('name')?.value || 'Your Name' }}</h1>
+            <p class="free-form-title">{{ careers.length > 0 && careers.controls[0].get('position')?.value ? careers.controls[0].get('position')?.value : 'Professional Title' }}</p>
+            <p class="free-form-contact">
+              {{ basicInfoForm.get('email')?.value || 'email@example.com' }} 
+              <span class="separator">|</span> 
+              {{ basicInfoForm.get('phone')?.value || '+82-10-0000-0000' }}
+              <ng-container *ngIf="basicInfoForm.get('address')?.value">
+                <span class="separator">|</span> 
+                {{ basicInfoForm.get('address')?.value }}
+              </ng-container>
+            </p>
+          </div>
+
+          <hr class="free-form-divider">
+
+          <!-- SUMMARY -->
+          <section class="free-form-section" *ngIf="selfIntroForm.get('motivation')?.value">
+            <h2 class="free-form-section-title">SUMMARY</h2>
+            <p class="free-form-content">{{ selfIntroForm.get('motivation')?.value }}</p>
+          </section>
+
+          <!-- STRENGTHS (장점/특기) -->
+          <section class="free-form-section" *ngIf="selfIntroForm.get('strengths')?.value">
+            <h2 class="free-form-section-title">STRENGTHS</h2>
+            <p class="free-form-content">{{ selfIntroForm.get('strengths')?.value }}</p>
+          </section>
+
+          <!-- EXPERIENCE -->
+          <section class="free-form-section" *ngIf="careers.length > 0 && careers.controls[0].get('companyName')?.value">
+            <h2 class="free-form-section-title">EXPERIENCE</h2>
+            <div class="free-form-item" *ngFor="let career of careers.controls">
+              <div class="free-form-item-header">
+                <strong>{{ career.get('companyName')?.value || 'Company Name' }}</strong>
+                <span class="free-form-date">{{ formatDate(career.get('startDate')?.value) }} - {{ career.get('isCurrent')?.value ? 'Present' : formatDate(career.get('endDate')?.value) }}</span>
+              </div>
+              <p class="free-form-item-title">{{ career.get('position')?.value || 'Position' }}</p>
+              <p class="free-form-item-description" *ngIf="career.get('description')?.value">{{ career.get('description')?.value }}</p>
+            </div>
+          </section>
+
+          <!-- EDUCATION -->
+          <section class="free-form-section" *ngIf="schools.length > 0 && schools.controls[0].get('schoolName')?.value">
+            <h2 class="free-form-section-title">EDUCATION</h2>
+            <div class="free-form-item" *ngFor="let school of schools.controls">
+              <div class="free-form-item-header">
+                <strong>{{ school.get('schoolName')?.value || 'School Name' }}</strong>
+                <span class="free-form-date">{{ school.get('status')?.value }}</span>
+              </div>
+              <p class="free-form-item-title" *ngIf="school.get('major')?.value">{{ school.get('major')?.value }}</p>
+            </div>
+          </section>
+
+          <!-- SKILLS & CERTIFICATIONS -->
+          <section class="free-form-section" *ngIf="(certifications.length > 0 && certifications.controls[0].get('certName')?.value) || (languageSkills.length > 0 && languageSkills.controls[0].get('language')?.value)">
+            <h2 class="free-form-section-title">SKILLS & CERTIFICATIONS</h2>
+            <ul class="free-form-skills-list">
+              <ng-container *ngFor="let cert of certifications.controls">
+                <li *ngIf="cert.get('certName')?.value">
+                  {{ cert.get('certName')?.value }} <span class="free-form-issuer" *ngIf="cert.get('issuer')?.value">- {{ cert.get('issuer')?.value }}</span>
+                </li>
+              </ng-container>
+              <ng-container *ngFor="let lang of languageSkills.controls">
+                <li *ngIf="lang.get('language')?.value">
+                  {{ lang.get('language')?.value }}: {{ lang.get('examName')?.value }} {{ lang.get('score')?.value ? '(' + lang.get('score')?.value + ')' : '' }}
+                </li>
+              </ng-container>
+            </ul>
+          </section>
+
+          <!-- HOBBIES & INTERESTS -->
+          <section class="free-form-section" *ngIf="selfIntroForm.get('hobbies')?.value">
+            <h2 class="free-form-section-title">HOBBIES & INTERESTS</h2>
+            <p class="free-form-content">{{ selfIntroForm.get('hobbies')?.value }}</p>
+          </section>
+        </div>
+        </div><!-- /resume-preview-wrapper -->
+
         <div class="preview-actions">
           <button mat-raised-button color="primary" (click)="openPreview()">
             <mat-icon>fullscreen</mat-icon> {{ 'COMMON.PREVIEW' | translate }}
           </button>
-          <button mat-raised-button color="accent">
+          <button mat-raised-button color="accent" (click)="downloadPdf()">
             <mat-icon>picture_as_pdf</mat-icon> PDF
           </button>
         </div>

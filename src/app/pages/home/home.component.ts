@@ -67,9 +67,9 @@ export class HomeComponent implements OnInit {
 
   features = [
     {
-      icon: 'cloud_sync',
-      title: '회원가입으로 백업기능',
-      description: '로그인하면 작성 내용이 자동 저장되어 언제든 이어서 작성할 수 있습니다'
+      icon: 'save',
+      title: '로그인 없이 자동저장',
+      description: '브라우저에 자동 저장되어 로그인 없이도 이어서 작성할 수 있습니다'
     },
     {
       icon: 'edit_note',

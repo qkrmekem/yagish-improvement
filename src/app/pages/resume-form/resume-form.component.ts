@@ -1,4 +1,4 @@
-import { Component, signal, computed, ViewChild, ViewContainerRef, ComponentRef, Type, effect, AfterViewInit, OnInit } from '@angular/core';
+import { Component, signal, computed, ViewChild, ViewContainerRef, ComponentRef, Type, effect, AfterViewInit, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -15,7 +15,8 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 import { BasicInfoStepComponent } from './steps/basic-info-step.component';
 import { EducationStepComponent } from './steps/education-step.component';
@@ -23,14 +24,16 @@ import { CareerStepComponent } from './steps/career-step.component';
 import { CertificationsStepComponent } from './steps/certifications-step.component';
 import { SelfIntroStepComponent } from './steps/self-intro-step.component';
 import { PlaceholderStepComponent } from './steps/placeholder-step.component';
+import { PdfService } from '../../services/pdf.service';
 
 // 이력서 양식 타입
-type ResumeType = 'standard' | 'original' | 'career';
+type ResumeType = 'standard' | 'original' | 'career' | 'free-form';
 
 const RESUME_TYPE_NAMES: Record<ResumeType, string> = {
   standard: '스탠다드 이력서',
   original: '오리지널 이력서',
-  career: '경력기술서'
+  career: '경력기술서',
+  'free-form': '자유양식 (Resume)'
 };
 
 @Component({
@@ -110,6 +113,7 @@ export class ResumeFormComponent implements AfterViewInit, OnInit {
   ];
 
   languageOptions = ['영어', '일본어', '중국어', '한국어', '독일어', '프랑스어', '스페인어'];
+  private langSubscription?: Subscription;
   examOptions = ['TOEIC', 'TOEFL', 'IELTS', 'JLPT', 'HSK', 'DELF/DALF', 'TestDaF'];
   gradeOptions = ['Native', 'N1', 'N2', 'N3', 'N4', 'N5', 'HSK 6급', 'HSK 5급', 'C2', 'C1', 'B2', 'B1', 'A2', 'A1'];
 
@@ -119,7 +123,8 @@ export class ResumeFormComponent implements AfterViewInit, OnInit {
     private dialog: MatDialog,
     private dateAdapter: DateAdapter<Date>,
     private translateService: TranslateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private pdfService: PdfService
   ) {
     // 반응형: 768px 이하에서는 가로 스텝퍼
     this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
@@ -161,14 +166,35 @@ export class ResumeFormComponent implements AfterViewInit, OnInit {
         this.loadStepComponent(step);
       }
     });
+
+    // 언어 변경 시 날짜 placeholder 업데이트
+    effect(() => {
+      const lang = this.currentLanguage();
+      if (this.currentComponentRef?.instance?.datePlaceholder !== undefined) {
+        this.currentComponentRef.instance.datePlaceholder = this.dateFormats().placeholder;
+      }
+    });
   }
 
   ngOnInit(): void {
     // 쿼리 파라미터에서 이력서 타입 읽기 (snapshot 사용)
     const type = this.route.snapshot.queryParamMap.get('type') as ResumeType;
-    if (type && ['standard', 'original', 'career'].includes(type)) {
+    if (type && ['standard', 'original', 'career', 'free-form'].includes(type)) {
       this.resumeType.set(type);
     }
+
+    // 앱 헤더의 언어 변경 구독
+    const currentLang = this.translateService.currentLang as 'ko' | 'ja' | 'en';
+    if (currentLang) {
+      this.currentLanguage.set(currentLang);
+    }
+    this.langSubscription = this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLanguage.set(event.lang as 'ko' | 'ja' | 'en');
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.langSubscription?.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -404,7 +430,8 @@ export class ResumeFormComponent implements AfterViewInit, OnInit {
       career: this.careerForm.value,
       certifications: this.certificationsForm.value,
       selfIntro: this.selfIntroForm.value,
-      dateFormat: this.dateFormats()
+      dateFormat: this.dateFormats(),
+      resumeType: this.resumeType()
     };
 
     this.dialog.open(PreviewDialogComponent, {
@@ -415,6 +442,16 @@ export class ResumeFormComponent implements AfterViewInit, OnInit {
       width: '100vw',
       height: '100vh'
     });
+  }
+
+  @ViewChild('resumePreviewWrapper') resumePreviewWrapper!: ElementRef<HTMLElement>;
+
+  // PDF 다운로드 (jsPDF + html2canvas)
+  async downloadPdf(): Promise<void> {
+    if (this.resumePreviewWrapper?.nativeElement) {
+      const filename = `${this.basicInfoForm.get('name')?.value || 'resume'}_이력서.pdf`;
+      await this.pdfService.generatePdf(this.resumePreviewWrapper.nativeElement, filename);
+    }
   }
 
   // 저장
@@ -442,7 +479,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     <div class="lightbox-container">
       <!-- 상단 툴바 -->
       <div class="lightbox-toolbar">
-        <span class="title">이력서 미리보기</span>
+        <span class="title">{{ data.resumeType === 'free-form' ? 'Resume Preview' : '이력서 미리보기' }}</span>
         <div class="toolbar-actions">
           <button mat-icon-button (click)="zoomOut()" matTooltip="축소">
             <mat-icon>zoom_out</mat-icon>
@@ -462,7 +499,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
       <!-- PDF 스타일 콘텐츠 -->
       <div class="lightbox-content">
-        <div class="resume-paper" [style.transform]="'scale(' + zoomLevel / 100 + ')'">
+        <!-- 한국식 이력서 -->
+        <div class="resume-paper" *ngIf="data.resumeType !== 'free-form'" [style.transform]="'scale(' + zoomLevel / 100 + ')'">
           <div class="paper-header">
             <h1>이력서</h1>
             <p class="date">작성일: {{ formatDate(data.basicInfo.resumeDate) }}</p>
@@ -543,6 +581,75 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
             </div>
           </section>
         </div>
+
+        <!-- 자유양식 (US Resume) -->
+        <div class="resume-paper free-form" *ngIf="data.resumeType === 'free-form'" [style.transform]="'scale(' + zoomLevel / 100 + ')'">
+          <div class="free-form-header">
+            <h1 class="free-form-name">{{ data.basicInfo.name || 'Your Name' }}</h1>
+            <p class="free-form-title">{{ getFirstPosition() }}</p>
+            <p class="free-form-contact">
+              {{ data.basicInfo.email || 'email@example.com' }} 
+              <span class="separator">|</span> 
+              {{ data.basicInfo.phone || '+82-10-0000-0000' }}
+              <ng-container *ngIf="data.basicInfo.address">
+                <span class="separator">|</span> 
+                {{ data.basicInfo.address }}
+              </ng-container>
+            </p>
+          </div>
+
+          <hr class="free-form-divider">
+
+          <section class="free-form-section" *ngIf="data.selfIntro.motivation">
+            <h2 class="free-form-section-title">SUMMARY</h2>
+            <p class="free-form-content">{{ data.selfIntro.motivation }}</p>
+          </section>
+
+          <section class="free-form-section" *ngIf="data.selfIntro.strengths">
+            <h2 class="free-form-section-title">STRENGTHS</h2>
+            <p class="free-form-content">{{ data.selfIntro.strengths }}</p>
+          </section>
+
+          <section class="free-form-section" *ngIf="hasCareerData()">
+            <h2 class="free-form-section-title">EXPERIENCE</h2>
+            <div class="free-form-item" *ngFor="let career of data.career.careers">
+              <div class="free-form-item-header" *ngIf="career.companyName">
+                <strong>{{ career.companyName }}</strong>
+                <span class="free-form-date">{{ formatDate(career.startDate) }} - {{ career.isCurrent ? 'Present' : formatDate(career.endDate) }}</span>
+              </div>
+              <p class="free-form-item-title" *ngIf="career.position">{{ career.position }}</p>
+              <p class="free-form-item-description" *ngIf="career.description">{{ career.description }}</p>
+            </div>
+          </section>
+
+          <section class="free-form-section" *ngIf="hasEducationData()">
+            <h2 class="free-form-section-title">EDUCATION</h2>
+            <div class="free-form-item" *ngFor="let school of data.education.schools">
+              <div class="free-form-item-header" *ngIf="school.schoolName">
+                <strong>{{ school.schoolName }}</strong>
+                <span class="free-form-date">{{ school.status }}</span>
+              </div>
+              <p class="free-form-item-title" *ngIf="school.major">{{ school.major }}</p>
+            </div>
+          </section>
+
+          <section class="free-form-section" *ngIf="hasSkillsData()">
+            <h2 class="free-form-section-title">SKILLS & CERTIFICATIONS</h2>
+            <ul class="free-form-skills-list">
+              <ng-container *ngFor="let cert of data.certifications.certifications">
+                <li *ngIf="cert.certName">{{ cert.certName }} <span class="free-form-issuer" *ngIf="cert.issuer">- {{ cert.issuer }}</span></li>
+              </ng-container>
+              <ng-container *ngFor="let lang of data.certifications.languages">
+                <li *ngIf="lang.language">{{ lang.language }}: {{ lang.examName }} {{ lang.score ? '(' + lang.score + ')' : '' }}</li>
+              </ng-container>
+            </ul>
+          </section>
+
+          <section class="free-form-section" *ngIf="data.selfIntro.hobbies">
+            <h2 class="free-form-section-title">HOBBIES & INTERESTS</h2>
+            <p class="free-form-content">{{ data.selfIntro.hobbies }}</p>
+          </section>
+        </div>
       </div>
     </div>
   `,
@@ -620,8 +727,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     .paper-section {
       margin-bottom: 20px;
       h2 {
-        font-size: 16px;
-        color: #333;
+        font-size: 18px;
+        color: #00C8AA;
         border-bottom: 1px solid #ddd;
         padding-bottom: 6px;
         margin: 0 0 12px;
@@ -675,6 +782,89 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
         white-space: pre-wrap;
       }
     }
+    /* 자유양식 스타일 */
+    .resume-paper.free-form {
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+    .free-form-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .free-form-name {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin: 0 0 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .free-form-title {
+      font-size: 16px;
+      color: #444;
+      margin: 0 0 8px;
+      font-style: italic;
+    }
+    .free-form-contact {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+      .separator { margin: 0 12px; color: #ccc; }
+    }
+    .free-form-divider {
+      border: none;
+      border-top: 2px solid #1a1a1a;
+      margin: 16px 0 24px;
+    }
+    .free-form-section {
+      margin-bottom: 24px;
+    }
+    .free-form-section-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
+      margin: 0 0 16px;
+    }
+    .free-form-content {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      text-align: justify;
+    }
+    .free-form-item {
+      margin-bottom: 16px;
+    }
+    .free-form-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      strong { font-size: 15px; color: #1a1a1a; }
+      .free-form-date { font-size: 13px; color: #666; font-style: italic; }
+    }
+    .free-form-item-title {
+      font-size: 14px;
+      color: #444;
+      font-style: italic;
+      margin: 2px 0 8px;
+    }
+    .free-form-item-description {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+      margin: 0;
+      padding-left: 16px;
+      border-left: 2px solid #eee;
+    }
+    .free-form-skills-list {
+      margin: 0;
+      padding-left: 20px;
+      li { font-size: 14px; color: #333; line-height: 1.8; }
+      .free-form-issuer { color: #666; font-style: italic; }
+    }
   `]
 })
 export class PreviewDialogComponent {
@@ -684,6 +874,27 @@ export class PreviewDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<PreviewDialogComponent>
   ) {}
+
+  getFirstPosition(): string {
+    if (this.data.career?.careers?.length > 0 && this.data.career.careers[0].position) {
+      return this.data.career.careers[0].position;
+    }
+    return 'Professional Title';
+  }
+
+  hasCareerData(): boolean {
+    return this.data.career?.careers?.some((c: any) => c.companyName);
+  }
+
+  hasEducationData(): boolean {
+    return this.data.education?.schools?.some((s: any) => s.schoolName);
+  }
+
+  hasSkillsData(): boolean {
+    const hasCerts = this.data.certifications?.certifications?.some((c: any) => c.certName);
+    const hasLangs = this.data.certifications?.languages?.some((l: any) => l.language);
+    return hasCerts || hasLangs;
+  }
 
   zoomIn(): void {
     if (this.zoomLevel < 200) {
@@ -706,8 +917,11 @@ export class PreviewDialogComponent {
   }
 
   formatDate(date: Date | string): string {
-    if (!date) return '미입력';
+    if (!date) return '';
     const d = new Date(date);
+    if (this.data.resumeType === 'free-form') {
+      return `${d.getMonth() + 1}/${d.getFullYear()}`;
+    }
     return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
   }
 }

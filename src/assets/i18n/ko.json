@@ -27,6 +27,7 @@
     "CAREER": "이력",
     "CERTIFICATIONS": "면허・자격증",
     "MOTIVATION": "지원동기",
+    "SELF_INTRO": "자기소개",
     "PREFERENCES": "본인희망",
     "WRITE_DATE": "작성일",
     "CONFIRM": "확인",
@@ -64,13 +65,13 @@
   "CAREER": {
     "TITLE": "경력 사항",
     "COMPANY_NAME": "회사명",
-    "COMPANY_PLACEHOLDER": "OO회사",
+    "COMPANY_PLACEHOLDER": "주식회사 OO",
     "POSITION": "직책/직위",
-    "POSITION_PLACEHOLDER": "개발자",
+    "POSITION_PLACEHOLDER": "웹 개발자 / 대리",
     "START_DATE": "입사일",
     "END_DATE": "퇴사일",
     "DESCRIPTION": "담당 업무",
-    "DESCRIPTION_PLACEHOLDER": "담당했던 업무를 입력하세요",
+    "DESCRIPTION_PLACEHOLDER": "예) 웹 서비스 프론트엔드 개발 및 유지보수, 신규 기능 기획 참여",
     "ADD_CAREER": "경력 추가"
   },
   "CERTIFICATIONS": {
@@ -85,20 +86,24 @@
   "LANGUAGE_SKILLS": {
     "TITLE": "어학 능력",
     "LANGUAGE": "언어",
+    "LANGUAGE_PLACEHOLDER": "영어 / 일본어 / 중국어 등",
     "EXAM_NAME": "시험명",
+    "EXAM_PLACEHOLDER": "TOEIC / JLPT / HSK 등",
     "GRADE": "등급",
+    "GRADE_PLACEHOLDER": "N1 / 1급 등",
     "SCORE": "점수",
+    "SCORE_PLACEHOLDER": "900점",
     "ACQUIRED_DATE": "취득일",
     "ADD_LANGUAGE": "어학 추가"
   },
   "SELF_INTRO": {
     "TITLE": "자기소개서",
     "MOTIVATION": "지원 동기",
-    "MOTIVATION_PLACEHOLDER": "지원 동기를 작성해주세요",
+    "MOTIVATION_PLACEHOLDER": "예) 귀사의 OO 서비스를 이용하면서 사용자 경험 개선에 기여하고 싶다는 생각을 하게 되었습니다. 특히 글로벌 서비스 확장에 관심이 있어...",
     "STRENGTHS": "성격의 장단점",
-    "STRENGTHS_PLACEHOLDER": "본인의 장점과 단점을 작성해주세요",
+    "STRENGTHS_PLACEHOLDER": "예) 장점: 새로운 기술을 빠르게 습득하며, 문제 해결에 끈기가 있습니다.\n단점: 완벽을 추구하다 보니 때때로 일정 관리에 어려움을 겪기도 합니다.",
     "HOBBIES": "취미 / 특기",
-    "HOBBIES_PLACEHOLDER": "취미나 특기를 작성해주세요",
+    "HOBBIES_PLACEHOLDER": "예) 독서, 러닝, 개인 프로젝트 개발",
     "CHAR_LIMIT": "500자 이내"
   },
   "IMPROVEMENT": {
