@@ -177,12 +177,16 @@ footer {
     }
 
     .improvement-summary {
-      .improvement-item {
-        font-size: 12px;
-        padding: 6px 12px;
+      gap: 8px;
 
-        span:not(.number) {
-          display: none;
+      .improvement-item {
+        font-size: 11px;
+        padding: 4px 10px;
+
+        .number {
+          width: 20px;
+          height: 20px;
+          font-size: 10px;
         }
       }
     }
